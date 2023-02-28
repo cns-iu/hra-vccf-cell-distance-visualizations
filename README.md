@@ -89,14 +89,14 @@ The experimental skin data used here is detailed in the “[High Resolution Sing
         </a>
         <p> Open the visualization in <a target="_blank" href="https://hubmapconsortium.github.io/vccf-visualization-release/html/region_5.html" >new window.</a>
     </div>
-    <div id="region7" class="tab-pane fade">
+    <div id="region6" class="tab-pane fade">
       <h3>Region 7</h3>
         <a target="_blank" href="https://hubmapconsortium.github.io/vccf-visualization-release/html/region_7.html" >
       <img src="/images_vccf/Region_6.png" alt="region7" style="width:100%">
         </a>
         <p> Open the visualization in <a target="_blank" href="https://hubmapconsortium.github.io/vccf-visualization-release/html/region_7.html" >new window.</a>
     </div>
-    <div id="region8" class="tab-pane fade">
+    <div id="region7" class="tab-pane fade">
       <h3>Region 8</h3>
         <a target="_blank" href="https://hubmapconsortium.github.io/vccf-visualization-release/html/region_8.html" >
       <img src="/images_vccf/Region_7.png" alt="region8" style="width:100%">
@@ -110,7 +110,7 @@ The experimental skin data used here is detailed in the “[High Resolution Sing
         </a>
         <p> Open the visualization in <a target="_blank" href="https://hubmapconsortium.github.io/vccf-visualization-release/html/region_9.html" >new window.</a>
     </div>
-    <div id="region10" class="tab-pane fade">
+    <div id="region12" class="tab-pane fade">
       <h3>Region 10</h3>
         <a target="_blank" href="https://hubmapconsortium.github.io/vccf-visualization-release/html/region_10.html" >
       <img src="/images_vccf/Region_12.png" alt="region10" style="width:100%">
