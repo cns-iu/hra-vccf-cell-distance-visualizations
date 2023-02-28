@@ -1,7 +1,7 @@
 # hra-vccf-cell-distance-visualizations
 VCCF cell distance visualizations extended to other organs, based on work on skin data.
 
-#  Preview: Vasculature CCF Visualization
+###  Preview: Vasculature CCF Visualization
 
 HuBMAP Atlas Previews demonstrate functionality and resources that will become available in future HuBMAP portal releases. Previews may rely on externally hosted data or analysis results that were generated with processing pipelines that are not yet integrated into the HuBMAP data infrastructure.
 
