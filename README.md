@@ -56,8 +56,8 @@ The experimental skin data used here is detailed in the “[High Resolution Sing
   <div class="tab-content">
     <div id="region1" class="tab-pane fade in active">
       <h3>Region 1</h3>
-      <a target="_blank" href="../html_vccf/region_1.html" >
-      <img src="../images_vccf/Region_1.png" alt="region1" style="width:100%">
+      <a target="_blank" href="/html_vccf/region_1.html" >
+      <img src="/images_vccf/Region_1.png" alt="region1" style="width:100%">
         </a>
       <p> Open the visualization in <a target="_blank" href="https://hubmapconsortium.github.io/vccf-visualization-release/html/region_1.html" >new window.</a>  
     </div>
