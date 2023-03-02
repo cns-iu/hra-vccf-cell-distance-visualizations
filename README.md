@@ -116,77 +116,7 @@ The experimental skin data used here is detailed in the “[High Resolution Sing
       <p> Open the visualization in <a target="_blank" href="https://htmlpreview.github.io/?https://github.com/shahhi/hra-vccf-cell-distance-visualizations/blob/main/html_vccf/region_1.html" >new window.</a>  
     </div>
     
-    <div id="region2" class="tab-pane fade">
-      <h3>Region 2</h3>
-        <a target="_blank" href="https://htmlpreview.github.io/?https://github.com/shahhi/hra-vccf-cell-distance-visualizations/blob/main/html_vccf/region_2.html" >
-      <img src="/images_vccf/Region_2.png" alt="region2" style="width:100%">
-        </a>
-        <p> Open the visualization in <a target="_blank" href="https://htmlpreview.github.io/?https://github.com/shahhi/hra-vccf-cell-distance-visualizations/blob/main/html_vccf/region_2.html" >new window.</a>
-  </div>
     
-    <div id="region3" class="tab-pane fade">
-      <h3>Region 3</h3>
-        <a target="_blank" href="https://htmlpreview.github.io/?https://github.com/shahhi/hra-vccf-cell-distance-visualizations/blob/main/html_vccf/region_3.html" >
-      <img src="/images_vccf/Region_3.png" alt="region3" style="width:100%">
-        </a>
-        <p> Open the visualization in <a target="_blank" href="https://htmlpreview.github.io/?https://github.com/shahhi/hra-vccf-cell-distance-visualizations/blob/main/html_vccf/region_3.html" >new window.</a>
-    </div>
-    
-    <div id="region4" class="tab-pane fade">
-      <h3>Region 4</h3>
-        <a target="_blank" href="https://htmlpreview.github.io/?https://github.com/shahhi/hra-vccf-cell-distance-visualizations/blob/main/html_vccf/region_4.html" >
-      <img src="/images_vccf/Region_4.png" alt="region4" style="width:100%">
-        </a>
-        <p> Open the visualization in <a target="_blank" href="https://htmlpreview.github.io/?https://github.com/shahhi/hra-vccf-cell-distance-visualizations/blob/main/html_vccf/region_4.html" >new window.</a>
-    </div>
-    
-    <div id="region5" class="tab-pane fade">
-      <h3>Region 5</h3>
-        <a target="_blank" href="https://htmlpreview.github.io/?https://github.com/shahhi/hra-vccf-cell-distance-visualizations/blob/main/html_vccf/region_5.html" >
-      <img src="/images_vccf/Region_5.png" alt="region5" style="width:100%">
-        </a>
-        <p> Open the visualization in <a target="_blank" href="https://htmlpreview.github.io/?https://github.com/shahhi/hra-vccf-cell-distance-visualizations/blob/main/html_vccf/region_5.html" >new window.</a>
-    </div>
-    
-    <div id="region6" class="tab-pane fade">
-      <h3>Region 6</h3>
-        <a target="_blank" href="https://htmlpreview.github.io/?https://github.com/shahhi/hra-vccf-cell-distance-visualizations/blob/main/html_vccf/region_6.html" >
-      <img src="/images_vccf/Region_6.png" alt="region6" style="width:100%">
-        </a>
-        <p> Open the visualization in <a target="_blank" href="https://htmlpreview.github.io/?https://github.com/shahhi/hra-vccf-cell-distance-visualizations/blob/main/html_vccf/region_6.html" >new window.</a>
-    </div>
-    
-    <div id="region7" class="tab-pane fade">
-      <h3>Region 7</h3>
-        <a target="_blank" href="https://htmlpreview.github.io/?https://github.com/shahhi/hra-vccf-cell-distance-visualizations/blob/main/html_vccf/region_7.html" >
-      <img src="/images_vccf/Region_7.png" alt="region7" style="width:100%">
-        </a>
-        <p> Open the visualization in <a target="_blank" href="https://htmlpreview.github.io/?https://github.com/shahhi/hra-vccf-cell-distance-visualizations/blob/main/html_vccf/region_7.html" >new window.</a>
-    </div>
-    
-    <div id="region8" class="tab-pane fade">
-      <h3>Region 8</h3>
-        <a target="_blank" href="https://htmlpreview.github.io/?https://github.com/shahhi/hra-vccf-cell-distance-visualizations/blob/main/html_vccf/region_8.html" >
-      <img src="/images_vccf/Region_8.png" alt="region8" style="width:100%">
-        </a>
-        <p> Open the visualization in <a target="_blank" href="https://htmlpreview.github.io/?https://github.com/shahhi/hra-vccf-cell-distance-visualizations/blob/main/html_vccf/region_8.html" >new window.</a>
-    </div>
-    
-    <div id="region9" class="tab-pane fade">
-      <h3>Region 9</h3>
-        <a target="_blank" href="https://htmlpreview.github.io/?https://github.com/shahhi/hra-vccf-cell-distance-visualizations/blob/main/html_vccf/region_9.html" >
-      <img src="/images_vccf/Region_9.png" alt="region9" style="width:100%">
-        </a>
-        <p> Open the visualization in <a target="_blank" href="https://htmlpreview.github.io/?https://github.com/shahhi/hra-vccf-cell-distance-visualizations/blob/main/html_vccf/region_9.html" >new window.</a>
-    </div>
-    
-    <div id="region10" class="tab-pane fade">
-      <h3>Region 10</h3>
-        <a target="_blank" href="https://htmlpreview.github.io/?https://github.com/shahhi/hra-vccf-cell-distance-visualizations/blob/main/html_vccf/region_10.html" >
-      <img src="/images_vccf/Region_10.png" alt="region10" style="width:100%">
-        </a>
-        <p> Open the visualization in <a target="_blank" href="https://htmlpreview.github.io/?https://github.com/shahhi/hra-vccf-cell-distance-visualizations/blob/main/html_vccf/region_10.html" >new window.</a>
-    </div>
     
     
   
