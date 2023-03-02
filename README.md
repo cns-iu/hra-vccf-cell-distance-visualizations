@@ -183,7 +183,7 @@ The experimental skin data used here is detailed in the “[High Resolution Sing
       <img src="/images_vccf/Region_10.png" alt="region10" style="width:100%">
         </a>
         <p> Open the visualization in <a target="_blank" href="https://htmlpreview.github.io/?https://github.com/shahhi/hra-vccf-cell-distance-visualizations/blob/main/html_vccf/region_10.html" >new window.</a>
-
+    </div>
     
     
   
