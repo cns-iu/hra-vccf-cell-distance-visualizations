@@ -107,6 +107,7 @@ The experimental skin data used here is detailed in the “[High Resolution Sing
   </ul>
 
   <div class="tab-content">
+    
     <div id="region1" class="tab-pane fade in active">
       <h3>Region 1</h3>
       <a target="_blank" href="https://htmlpreview.github.io/?https://github.com/shahhi/hra-vccf-cell-distance-visualizations/blob/main/html_vccf/region_1.html" >
@@ -122,6 +123,7 @@ The experimental skin data used here is detailed in the “[High Resolution Sing
         </a>
         <p> Open the visualization in <a target="_blank" href="https://htmlpreview.github.io/?https://github.com/shahhi/hra-vccf-cell-distance-visualizations/blob/main/html_vccf/region_2.html" >new window.</a>
   </div>
+    
     <div id="region3" class="tab-pane fade">
       <h3>Region 3</h3>
         <a target="_blank" href="https://htmlpreview.github.io/?https://github.com/shahhi/hra-vccf-cell-distance-visualizations/blob/main/html_vccf/region_3.html" >
@@ -177,6 +179,7 @@ The experimental skin data used here is detailed in the “[High Resolution Sing
         </a>
         <p> Open the visualization in <a target="_blank" href="https://htmlpreview.github.io/?https://github.com/shahhi/hra-vccf-cell-distance-visualizations/blob/main/html_vccf/region_9.html" >new window.</a>
     </div>
+    
     <div id="region10" class="tab-pane fade">
       <h3>Region 10</h3>
         <a target="_blank" href="https://htmlpreview.github.io/?https://github.com/shahhi/hra-vccf-cell-distance-visualizations/blob/main/html_vccf/region_10.html" >
