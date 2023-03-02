@@ -44,11 +44,65 @@ The experimental skin data used here is detailed in the “[High Resolution Sing
     <li><a data-toggle="tab" href="#region3">Region 3</a></li>
     <li><a data-toggle="tab" href="#region4">Region 4</a></li>
     <li><a data-toggle="tab" href="#region5">Region 5</a></li>
+    <li><a data-toggle="tab" href="#region2">Region 6</a></li>
     <li><a data-toggle="tab" href="#region7">Region 7</a></li>
     <li><a data-toggle="tab" href="#region8">Region 8</a></li>
     <li><a data-toggle="tab" href="#region9">Region 9</a></li>
     <li><a data-toggle="tab" href="#region10">Region 10</a></li>
-    
+    <li><a data-toggle="tab" href="#region2">Region 11</a></li>
+    <li><a data-toggle="tab" href="#region2">Region 12</a></li>
+    <li><a data-toggle="tab" href="#region3">Region 13</a></li>
+    <li><a data-toggle="tab" href="#region4">Region 14</a></li>
+    <li><a data-toggle="tab" href="#region5">Region 15</a></li>
+    <li><a data-toggle="tab" href="#region7">Region 16</a></li>
+    <li><a data-toggle="tab" href="#region8">Region 17</a></li>
+    <li><a data-toggle="tab" href="#region9">Region 18</a></li>
+    <li><a data-toggle="tab" href="#region10">Region 19</a></li>
+    <li><a data-toggle="tab" href="#region2">Region 20</a></li>
+    <li><a data-toggle="tab" href="#region2">Region 21</a></li>
+    <li><a data-toggle="tab" href="#region2">Region 22</a></li>
+    <li><a data-toggle="tab" href="#region3">Region 23</a></li>
+    <li><a data-toggle="tab" href="#region4">Region 24</a></li>
+    <li><a data-toggle="tab" href="#region5">Region 25</a></li>
+    <li><a data-toggle="tab" href="#region7">Region 26</a></li>
+    <li><a data-toggle="tab" href="#region8">Region 27</a></li>
+    <li><a data-toggle="tab" href="#region9">Region 28</a></li>
+    <li><a data-toggle="tab" href="#region10">Region 29</a></li>
+    <li><a data-toggle="tab" href="#region2">Region 30</a></li>
+    <li><a data-toggle="tab" href="#region2">Region 31</a></li>
+    <li><a data-toggle="tab" href="#region2">Region 32</a></li>
+    <li><a data-toggle="tab" href="#region3">Region 33</a></li>
+    <li><a data-toggle="tab" href="#region4">Region 34</a></li>
+    <li><a data-toggle="tab" href="#region5">Region 35</a></li>
+    <li><a data-toggle="tab" href="#region7">Region 36</a></li>
+    <li><a data-toggle="tab" href="#region8">Region 37</a></li>
+    <li><a data-toggle="tab" href="#region9">Region 38</a></li>
+    <li><a data-toggle="tab" href="#region10">Region 39</a></li>
+    <li><a data-toggle="tab" href="#region2">Region 40</a></li>
+    <li><a data-toggle="tab" href="#region2">Region 41</a></li>
+    <li><a data-toggle="tab" href="#region2">Region 42</a></li>
+    <li><a data-toggle="tab" href="#region3">Region 43</a></li>
+    <li><a data-toggle="tab" href="#region4">Region 44</a></li>
+    <li><a data-toggle="tab" href="#region5">Region 45</a></li>
+    <li><a data-toggle="tab" href="#region7">Region 46</a></li>
+    <li><a data-toggle="tab" href="#region8">Region 47</a></li>
+    <li><a data-toggle="tab" href="#region9">Region 48</a></li>
+    <li><a data-toggle="tab" href="#region10">Region 49</a></li>
+    <li><a data-toggle="tab" href="#region2">Region 50</a></li>
+    <li><a data-toggle="tab" href="#region2">Region 51</a></li>
+    <li><a data-toggle="tab" href="#region2">Region 52</a></li>
+    <li><a data-toggle="tab" href="#region3">Region 53</a></li>
+    <li><a data-toggle="tab" href="#region4">Region 54</a></li>
+    <li><a data-toggle="tab" href="#region5">Region 55</a></li>
+    <li><a data-toggle="tab" href="#region7">Region 56</a></li>
+    <li><a data-toggle="tab" href="#region8">Region 57</a></li>
+    <li><a data-toggle="tab" href="#region9">Region 58</a></li>
+    <li><a data-toggle="tab" href="#region10">Region 59</a></li>
+    <li><a data-toggle="tab" href="#region2">Region 60</a></li>
+    <li><a data-toggle="tab" href="#region2">Region 61</a></li>
+    <li><a data-toggle="tab" href="#region2">Region 62</a></li>
+    <li><a data-toggle="tab" href="#region3">Region 63</a></li>
+    <li><a data-toggle="tab" href="#region4">Region 64</a></li>
 
   </ul>
 
@@ -102,12 +156,12 @@ The experimental skin data used here is detailed in the “[High Resolution Sing
         </a>
         <p> Open the visualization in <a target="_blank" href="https://hubmapconsortium.github.io/vccf-visualization-release/html/region_8.html" >new window.</a>
     </div>
-    <div id="region9" class="tab-pane fade">
+    <div id="region8" class="tab-pane fade">
       <h3>Region 9</h3>
-        <a target="_blank" href="https://hubmapconsortium.github.io/vccf-visualization-release/html/region_9.html" >
-      <img src="/images_vccf/Region_9.png" alt="region9" style="width:100%">
+        <a target="_blank" href="https://hubmapconsortium.github.io/vccf-visualization-release/html/region_8.html" >
+      <img src="/images_vccf/Region_8.png" alt="region8" style="width:100%">
         </a>
-        <p> Open the visualization in <a target="_blank" href="https://hubmapconsortium.github.io/vccf-visualization-release/html/region_9.html" >new window.</a>
+        <p> Open the visualization in <a target="_blank" href="https://hubmapconsortium.github.io/vccf-visualization-release/html/region_8.html" >new window.</a>
     </div>
     <div id="region12" class="tab-pane fade">
       <h3>Region 10</h3>
@@ -122,4 +176,4 @@ The experimental skin data used here is detailed in the “[High Resolution Sing
   
 </div>
 
-Try all the 64 intestine samples [here](https://hubmapconsortium.github.io/vccf-visualization-release/).
+
