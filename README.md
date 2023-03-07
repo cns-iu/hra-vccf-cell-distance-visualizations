@@ -178,27 +178,7 @@ The experimental skin data used here is detailed in the “[High Resolution Sing
         </a>
         <p> Open the visualization in <a target="_blank" href="https://hubmapconsortium.github.io/vccf-visualization-release/html/region_11.html" >new window.</a>
     </div>
-    <div id="violincell" class="tab-pane fade">
-        <h3>Violin Cell</h3>
-        <a target="_blank" href="https://hubmapconsortium.github.io/vccf-visualization-release/html/violin_cell.html" >
-        <img src="../img/violincell.png" alt="violincell" style="width:100%">
-        </a>
-        <p> Open the visualization in <a target="_blank" href="https://hubmapconsortium.github.io/vccf-visualization-release/html/violin_cell.html" >new window.</a>
-    </div>
-    <div id="violinCellAll" class="tab-pane fade">
-        <h3>Violin Cell All Region</h3>
-        <a target="_blank" href="https://hubmapconsortium.github.io/vccf-visualization-release/html/violin_cell_all_region.html" >
-        <img src="../img/violinCellAll.png" alt="violinCellAll" style="width:100%">
-        </a>
-        <p> Open the visualization in <a target="_blank" href="https://hubmapconsortium.github.io/vccf-visualization-release/html/violin_cell_all_region.html" >new window.</a>
-    </div>
-    <div id="ViolinDamage" class="tab-pane fade">
-        <h3>Violin Damage</h3>
-        <a target="_blank" href="https://hubmapconsortium.github.io/vccf-visualization-release/html/epidermis/violin_damage_epidermis.html" >
-        <img src="../img/violinDamage.png" alt="ViolinDamage" style="width:100%">
-        </a>
-        <p> Open the visualization in <a target="_blank" href="https://hubmapconsortium.github.io/vccf-visualization-release/html/epidermis/violin_damage_epidermis.html" >new window.</a>
-    </div>
+
 
 </div>
 
