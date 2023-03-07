@@ -36,6 +36,11 @@ The experimental skin data used here is detailed in the “[High Resolution Sing
 
 
 ### Visualization
+<div class="tab">
+  <button class="tablinks" onclick="openCity(event, 'region1')">Region 1</button>
+  <button class="tablinks" onclick="openCity(event, 'region2')">Region 2</button>
+  <button class="tablinks" onclick="openCity(event, 'region3')">Region 3</button>
+</div>
 
 <div class="tabs-nav">
   <ul class="nav nav-tabs">
