@@ -19,7 +19,7 @@ This Preview showcases a 2D interactive visualization of distances from cell nuc
 
 ### Experimental Data Details
 
-The experimental skin data used here is detailed in the “[High Resolution Single Cell Maps Reveals Distinct Cell Organization and Function Across Different Regions of the Human Intestine](https://www.biorxiv.org/content/early/2021/11/25/2021.11.25.469203)” paper.
+The experimental intestine data used here is detailed in the “[High Resolution Single Cell Maps Reveals Distinct Cell Organization and Function Across Different Regions of the Human Intestine](https://www.biorxiv.org/content/early/2021/11/25/2021.11.25.469203)” paper.
 
 ### Contributors
 **Intestine Data:** 
