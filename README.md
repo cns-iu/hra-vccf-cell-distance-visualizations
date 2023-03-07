@@ -45,7 +45,7 @@ The experimental skin data used here is detailed in the “[High Resolution Sing
     <li><a data-toggle="tab" href="#region3">Region 3</a></li>
     <li><a data-toggle="tab" href="#region4">Region 4</a></li>
     <li><a data-toggle="tab" href="#region5">Region 5</a></li>
-    <li><a data-toggle="tab" href="#region2">Region 6</a></li>
+    <li><a data-toggle="tab" href="#region6">Region 6</a></li>
     <li><a data-toggle="tab" href="#region7">Region 7</a></li>
     <li><a data-toggle="tab" href="#region8">Region 8</a></li>
     <li><a data-toggle="tab" href="#region9">Region 9</a></li>
