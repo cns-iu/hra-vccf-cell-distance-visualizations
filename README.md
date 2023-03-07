@@ -199,13 +199,7 @@ The experimental skin data used here is detailed in the “[High Resolution Sing
         </a>
         <p> Open the visualization in <a target="_blank" href="https://hubmapconsortium.github.io/vccf-visualization-release/html/epidermis/violin_damage_epidermis.html" >new window.</a>
     </div>
-    <div id="ViolinDamageAll" class="tab-pane fade">
-        <h3>Violin Damage All Region</h3>
-        <a target="_blank" href="https://hubmapconsortium.github.io/vccf-visualization-release/html/epidermis/violin_damage_all_region_epidermis.html" >
-        <img src="../img/violinDamageAll.png" alt="ViolinDamageAll" style="width:100%">
-        </a>
-        <p> Open the visualization in <a target="_blank" href="https://hubmapconsortium.github.io/vccf-visualization-release/html/epidermis/violin_damage_all_region_epidermis.html" >new window.</a>
-    </div>
+
 </div>
 
 
