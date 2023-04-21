@@ -14,6 +14,28 @@ import warnings
 warnings.simplefilter('ignore')
 
 
+# # Give path to your data from source : https://www.biorxiv.org/content/10.1101/2021.11.25.469203v1 (High Resolution Single Cell Maps Reveals Distinct Cell Organization and Function Across Different Regions of the Human Intestine)
+# split_source_file = '/Users/himanishah/Desktop/VCCF_Computations/doi_10.5061_dryad.pk0p2ngrf__v5/CODEX_HuBMAP_alldata_Dryad.csv'
+
+# data_new = pd.read_csv(split_source_file)
+
+# # 'OLFM4', 'FAP', 'CD25', 'CollIV', 'CK7', 'MUC6'
+# # These above columns have null values : 248285, 248285, 248285, 248285, 1735783, 1214947 respectively
+
+# # Store types of unique regions before splitting
+# unique_regions = data_new.iloc[:,56].unique()
+
+unique_regions = ['B004_Ascending', 'B005_Ascending' ,'B006_Ascending' ,'B009_Right', 'B010_Right', 'B011_Right', 'B012_Right', 'B008_Right' ,
+                  'B004_Descending','B005_Descending' ,'B006_Descending' ,'B009_Left' ,'B012_Left' ,'B011_Left','B010_Left' ,'B008_Left' ,'B005_Duodenum' ,
+                  'B004_Duodenum' ,'B006_Duodenum','B009_Duodenum' ,'B011_Duodenum' ,'B012_Duodenum' ,'B010_Duodenum','B008_Duodenum', 
+                  'B004_Ileum', 'B005_Ileum' ,'B006_Ileum', 'B009_Ileum', 'B010_Ileum' ,'B011_Ileum' ,'B012_Ileum', 'B008_Ileum', 'B006_Mid-jejunum', 
+                  'B004_Mid-jejunum', 'B005_Mid-jejunum', 'B009_Mid jejunum', 'B011_Mid jejunum' ,'B012_Mid jejunum', 'B010_Mid jejunum','B008_Mid jejunum' ,
+                  'B004_Proximal Jejunum', 'B005_Proximal Jejunum','B006_Proximal Jejunum' ,'B011_Proximal jejunum', 'B009_Proximal jejunum','B010_Proximal jejunum' ,'B012_Proximal jejunum', 'B008_Proximal jejunum',
+                  'B004_Descending - Sigmoid' ,'B005_Descending - Sigmoid', 'B006_Descending - Sigmoid', 'B009_Sigmoid' ,'B011_Sigmoid' ,'B010_Sigmoid','B012_Sigmoid' ,'B008_Sigmoid', 
+                  'B004_Transverse' ,'B005_Transverse','B006_Transverse', 'B009_Trans' ,'B010_Trans', 'B011_Trans' ,'B012_Trans','B008_Trans']
+
+
+
 region_index = sys.argv[1]
 
 
@@ -47,9 +69,10 @@ print(len(x_list))
 print(len(y_list))
 print(len(xv_list))
 print(len(yv_list))
-
+temp_x = 0
+temp_y = 0
 for i in range(len(x_list)):
-    min_dist = 1000
+    min_dist = 500
     has_near = False
     for j in range(len(xv_list)):
         if abs(x_list[i] - xv_list[j]) < min_dist and abs(y_list[i] - yv_list[j]) < min_dist:
@@ -418,9 +441,13 @@ cell_dict = {
 def generate_nuclei_scatter(df, ct, visible=True, show_legend=True, legend_group=""):
     return go.Scatter(x=df[df['Cell Type'] == ct]["x"],
                         y=df[df['Cell Type'] == ct]["y"],
-                        
-                        mode="markers",
                         name=cell_dict[cell_type]['legend'],
+                        # text = df[df['Cell Type'] == ct]['Cell Type'].apply(lambda x: f'Cell Type: {x}<br>x: {x}'),
+                        # hovertemplate="%{text}<extra></extra>",
+                        mode="markers",
+                        # text=df[df['Cell Type'] == ct]['Cell Type'],
+                        hovertemplate='Cell Type: <br>X: %{x}<br>Y: %{y}',
+                        
                         showlegend=show_legend,
                         legendgroup=legend_group,
                         legendgrouptitle_text=legend_group,
@@ -438,8 +465,11 @@ def generate_nuclei_scatter(df, ct, visible=True, show_legend=True, legend_group
 
 def generate_other_scatter(df, key, name, symbol_name, visible=True, show_legend=True, legend_group=""):
     return go.Scatter(x=df[f"X{key}"], y=df[f"Y{key}"],
-                        mode="markers",
                         name=name,
+                        # text=df[df['Cell Type'] == ct]['Cell Type'].apply(lambda x: f'Cell Type: {x}<br>x: %{x:$,.0f}<br>y: %{y:.0%}'),
+                        # hovertemplate="%{text}<extra></extra>",
+                        mode="markers",
+                        hovertemplate='Cell Type: <br>X: %{x}<br>Y: %{y}',
                         showlegend=show_legend,
                         legendgroup=legend_group,
                         legendgrouptitle_text=legend_group,
@@ -457,9 +487,10 @@ def generate_other_scatter(df, key, name, symbol_name, visible=True, show_legend
 def generate_line(df, name, color, visible=True, opacity=0.5, width=1, show_legend=True, legend_group=""):
     return go.Scatter(x=df["x"],
                         y=df["y"],
-                        
-                        mode="lines",
                         name=name,
+                        # text=df[df['Cell Type'] == ct]['Cell Type'].apply(lambda x: f'Cell Type: {x}<br>x: %{x:$,.0f}<br>y: %{y:.0%}'),
+                        # hovertemplate="%{text}<extra></extra>",
+                        mode="lines",
                         opacity=opacity,
                         showlegend=show_legend,
                         legendgroup=legend_group,
@@ -492,7 +523,9 @@ main_fig_count = len(traces_n)
 
 
 # image_hyperlink = f'https://raw.githubusercontent.com/hubmapconsortium/vccf-visualization-release/main/vheimages/S002_VHE_region_0{region_index:02d}.jpg'
-main_subtitle = f'<br><sup>Region {region_index} </sup>'
+main_subtitle = f'<br><sup>Region {region_index} / Donor {unique_regions[int(region_index) - 1]}  </sup>'
+# main_subtitle = f'<br><sup>Region {region_index} / Donor {unique_regions[region_index]}  <a href="{image_hyperlink}">Virtual H&E Image Preview</a></sup>'
+# main_subtitle = f'<br> {unique_regions[region_index]} <sup>Region {region_index} </sup>'
 hist_subtitle = '<br><sup>Histogram</sup>'
 horizontal_spacing = 0.03
 figure = make_subplots(
@@ -514,11 +547,11 @@ for trace_n in traces_n:
 
 
 
-figure.update_layout(
-    scene=dict(
-        aspectmode='data',
-    ),
-)
+# figure.update_layout(
+#     scene=dict(
+#         aspectmode='data',
+#     ),
+# )
 
 
 
@@ -581,7 +614,7 @@ for cell_list, col in zip([nuclei_type_list, ],
             
     
 # Invisble scale for keep space instant
-invisible_scale = go.Scatter3d(
+invisible_scale = go.Scatter(
     name="",
     visible=True,
     showlegend=False,
@@ -612,6 +645,37 @@ histogram_layout_buttons = list([
     )
 ])
 layer_select_buttons = []
+
+# # Create and add slider
+# steps = []
+# for i in range(z_count + 1):
+#     title = f"{str(i)}" if i != 0 else "All"
+#     step = dict(
+#         label=title,
+#         method="update",
+#         args=[{"visible": [False] * len(figure.data),
+#                "showlegend": [False] * len(figure.data)},
+#               {"title": ""}],  # layout attribute
+#     )
+#     for f in range(main_fig_count):
+#         step["args"][0]["visible"][i * main_fig_count + f] = True  # Toggle i'th trace to "visible"
+#         step["args"][0]["showlegend"][i * main_fig_count + f] = True
+#     rest = len(figure.data) - (z_count + 1) * main_fig_count
+#     for h in range(1, rest + 1):
+#         step["args"][0]["visible"][-h] = True
+#     steps.append(step)
+# layer_select_buttons = steps
+
+# sliders = [dict(
+#     active=0,
+#     currentvalue={"prefix": "Slide: "},
+#     pad={"t": 0, "b": 0},
+#     steps=steps,
+#     yanchor='top', y=1,
+#     xanchor='right', x=1,
+#     lenmode='fraction', len=0.25
+# )]
+
 
 # layout update
 for annotation in figure['layout']['annotations'][:1]:
@@ -682,16 +746,17 @@ figure.update_layout(
         aspectmode='data',
         xaxis=dict(nticks=10, backgroundcolor=background_color, ),
         yaxis=dict(nticks=10, backgroundcolor=background_color, ),
-        zaxis=dict(nticks=5, backgroundcolor=background_color, ),
+        # zaxis=dict(nticks=5, backgroundcolor=background_color, ),
     ),
     plot_bgcolor=background_color,
+    # hovermode='x unified'
 
 )
 
 
 figure.write_html(os.path.join('/Users/himanishah/Desktop/VCCF_Computations/Intestine_64_data/html_vccf', f"Region_{region_index}.html"))
 
-# figure.write_image(os.path.join('/Users/himanishah/Desktop/VCCF_Computations/Intestine_64_data/images_vccf', f"Region_{region_index}.png"))
+figure.write_image(os.path.join('/Users/himanishah/Desktop/VCCF_Computations/Intestine_64_data/images_vccf', f"Region_{region_index}.png"))
 
 
 # export as static image
