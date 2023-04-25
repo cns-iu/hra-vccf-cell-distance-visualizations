@@ -714,7 +714,6 @@ The experimental intestine data used here is detailed in the “[Spatiotemporal 
         </a>
         <p> Open the visualization in <a target="_blank" href="https://cns-iu.github.io/hra-vccf-cell-distance-visualizations/html_vccf_placenta/Image_66.html" >new window.</a>
     </div>
-
     <div id="Image67" class="tab-pane fade">
       <h3>Image 67</h3>
         <a target="_blank" href="https://cns-iu.github.io/hra-vccf-cell-distance-visualizations/html_vccf_placenta/Image_67.html" >
@@ -729,7 +728,6 @@ The experimental intestine data used here is detailed in the “[Spatiotemporal 
         </a>
         <p> Open the visualization in <a target="_blank" href="https://cns-iu.github.io/hra-vccf-cell-distance-visualizations/html_vccf_placenta/Image_68.html" >new window.</a>
     </div>
-    
     <div id="Image69" class="tab-pane fade">
       <h3>Image 69</h3>
         <a target="_blank" href="https://cns-iu.github.io/hra-vccf-cell-distance-visualizations/html_vccf_placenta/Image_69.html" >
@@ -737,7 +735,6 @@ The experimental intestine data used here is detailed in the “[Spatiotemporal 
         </a>
         <p> Open the visualization in <a target="_blank" href="https://cns-iu.github.io/hra-vccf-cell-distance-visualizations/html_vccf_placenta/Image_69.html" >new window.</a>
     </div>
-    
     <div id="Image70" class="tab-pane fade">
       <h3>Image 70</h3>
         <a target="_blank" href="https://cns-iu.github.io/hra-vccf-cell-distance-visualizations/html_vccf_placenta/Image_70.html" >
