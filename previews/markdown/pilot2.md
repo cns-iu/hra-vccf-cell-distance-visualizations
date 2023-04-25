@@ -1505,12 +1505,12 @@ The experimental intestine data used here is detailed in the “[Spatiotemporal 
         </a>
         <p> Open the visualization in <a target="_blank" href="https://cns-iu.github.io/hra-vccf-cell-distance-visualizations/html_vccf_placenta/Image_179.html" >new window.</a>
     </div>
-    <div id="Image80" class="tab-pane fade">
-      <h3>Image 80</h3>
-        <a target="_blank" href="https://cns-iu.github.io/hra-vccf-cell-distance-visualizations/html_vccf_placenta/Image_80.html" >
-      <img src="../../images_vccf_placenta/Image_80.png" alt="Image80" style="width:100%">
+    <div id="Image180" class="tab-pane fade">
+      <h3>Image 180</h3>
+        <a target="_blank" href="https://cns-iu.github.io/hra-vccf-cell-distance-visualizations/html_vccf_placenta/Image_180.html" >
+      <img src="../../images_vccf_placenta/Image_180.png" alt="Image180" style="width:100%">
         </a>
-        <p> Open the visualization in <a target="_blank" href="https://cns-iu.github.io/hra-vccf-cell-distance-visualizations/html_vccf_placenta/Image_80.html" >new window.</a>
+        <p> Open the visualization in <a target="_blank" href="https://cns-iu.github.io/hra-vccf-cell-distance-visualizations/html_vccf_placenta/Image_180.html" >new window.</a>
     </div>
 
     <div id="Image191" class="tab-pane fade">
