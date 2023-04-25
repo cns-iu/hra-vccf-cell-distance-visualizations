@@ -1456,6 +1456,63 @@ The experimental intestine data used here is detailed in the “[Spatiotemporal 
         </a>
         <p> Open the visualization in <a target="_blank" href="https://cns-iu.github.io/hra-vccf-cell-distance-visualizations/html_vccf_placenta/Image_172.html" >new window.</a>
     </div>
+    <div id="Image173" class="tab-pane fade">
+      <h3>Image 173</h3>
+        <a target="_blank" href="https://cns-iu.github.io/hra-vccf-cell-distance-visualizations/html_vccf_placenta/Image_173.html" >
+      <img src="../../images_vccf_placenta/Image_173.png" alt="Image173" style="width:100%">
+        </a>
+        <p> Open the visualization in <a target="_blank" href="https://cns-iu.github.io/hra-vccf-cell-distance-visualizations/html_vccf_placenta/Image_173.html" >new window.</a>
+    </div>
+    <div id="Image174" class="tab-pane fade">
+      <h3>Image 174</h3>
+        <a target="_blank" href="https://cns-iu.github.io/hra-vccf-cell-distance-visualizations/html_vccf_placenta/Image_174.html" >
+      <img src="../../images_vccf_placenta/Image_174.png" alt="Image174" style="width:100%">
+        </a>
+        <p> Open the visualization in <a target="_blank" href="https://cns-iu.github.io/hra-vccf-cell-distance-visualizations/html_vccf_placenta/Image_174.html" >new window.</a>
+    </div>
+    <div id="Image175" class="tab-pane fade">
+      <h3>Image 175</h3>
+        <a target="_blank" href="https://cns-iu.github.io/hra-vccf-cell-distance-visualizations/html_vccf_placenta/Image_175.html" >
+      <img src="../../images_vccf_placenta/Image_175.png" alt="Image175" style="width:100%">
+        </a>
+        <p> Open the visualization in <a target="_blank" href="https://cns-iu.github.io/hra-vccf-cell-distance-visualizations/html_vccf_placenta/Image_175.html" >new window.</a>
+    </div>
+    <div id="Image176" class="tab-pane fade">
+      <h3>Image 176</h3>
+        <a target="_blank" href="https://cns-iu.github.io/hra-vccf-cell-distance-visualizations/html_vccf_placenta/Image_176.html" >
+      <img src="../../images_vccf_placenta/Image_176.png" alt="Image176" style="width:100%">
+        </a>
+        <p> Open the visualization in <a target="_blank" href="https://cns-iu.github.io/hra-vccf-cell-distance-visualizations/html_vccf_placenta/Image_176.html" >new window.</a>
+    </div>
+    <div id="Image177" class="tab-pane fade">
+      <h3>Image 177</h3>
+        <a target="_blank" href="https://cns-iu.github.io/hra-vccf-cell-distance-visualizations/html_vccf_placenta/Image_177.html" >
+      <img src="../../images_vccf_placenta/Image_177.png" alt="Image177" style="width:100%">
+        </a>
+        <p> Open the visualization in <a target="_blank" href="https://cns-iu.github.io/hra-vccf-cell-distance-visualizations/html_vccf_placenta/Image_177.html" >new window.</a>
+    </div>
+    <div id="Image178" class="tab-pane fade">
+      <h3>Image 178</h3>
+        <a target="_blank" href="https://cns-iu.github.io/hra-vccf-cell-distance-visualizations/html_vccf_placenta/Image_178.html" >
+      <img src="../../images_vccf_placenta/Image_178.png" alt="Image178" style="width:100%">
+        </a>
+        <p> Open the visualization in <a target="_blank" href="https://cns-iu.github.io/hra-vccf-cell-distance-visualizations/html_vccf_placenta/Image_178.html" >new window.</a>
+    </div>
+    <div id="Image179" class="tab-pane fade">
+      <h3>Image 179</h3>
+        <a target="_blank" href="https://cns-iu.github.io/hra-vccf-cell-distance-visualizations/html_vccf_placenta/Image_179.html" >
+      <img src="../../images_vccf_placenta/Image_179.png" alt="Image179" style="width:100%">
+        </a>
+        <p> Open the visualization in <a target="_blank" href="https://cns-iu.github.io/hra-vccf-cell-distance-visualizations/html_vccf_placenta/Image_179.html" >new window.</a>
+    </div>
+    <div id="Image80" class="tab-pane fade">
+      <h3>Image 80</h3>
+        <a target="_blank" href="https://cns-iu.github.io/hra-vccf-cell-distance-visualizations/html_vccf_placenta/Image_80.html" >
+      <img src="../../images_vccf_placenta/Image_80.png" alt="Image80" style="width:100%">
+        </a>
+        <p> Open the visualization in <a target="_blank" href="https://cns-iu.github.io/hra-vccf-cell-distance-visualizations/html_vccf_placenta/Image_80.html" >new window.</a>
+    </div>
+
     <div id="Image191" class="tab-pane fade">
       <h3>Image 191</h3>
         <a target="_blank" href="https://cns-iu.github.io/hra-vccf-cell-distance-visualizations/html_vccf_placenta/Image_191.html" >
