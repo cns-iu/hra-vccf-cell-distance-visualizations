@@ -22,8 +22,8 @@ warnings.simplefilter('ignore')
 # # 'OLFM4', 'FAP', 'CD25', 'CollIV', 'CK7', 'MUC6'
 # # These above columns have null values : 248285, 248285, 248285, 248285, 1735783, 1214947 respectively
 
-# # Store types of unique regions before splitting
-# unique_regions = data_new.iloc[:,56].unique()
+# # Store types of unique regions before splitting using vccf_splitter.py
+
 
 unique_regions = ['B004_Ascending', 'B005_Ascending' ,'B006_Ascending' ,'B009_Right', 'B010_Right', 'B011_Right', 'B012_Right', 'B008_Right' ,
                   'B004_Descending','B005_Descending' ,'B006_Descending' ,'B009_Left' ,'B012_Left' ,'B011_Left','B010_Left' ,'B008_Left' ,'B005_Duodenum' ,
@@ -35,23 +35,27 @@ unique_regions = ['B004_Ascending', 'B005_Ascending' ,'B006_Ascending' ,'B009_Ri
                   'B004_Transverse' ,'B005_Transverse','B006_Transverse', 'B009_Trans' ,'B010_Trans', 'B011_Trans' ,'B012_Trans','B008_Trans']
 
 
-
+# Take input Region number within Range 1 to 64
 region_index = sys.argv[1]
 
-
+# Get the path to respective Image
 path = r'/Users/himanishah/Desktop/VCCF_Computations/Intestine_64_data/Region_' + str(region_index) + '.csv'
 df_Region_1 = pd.read_csv(path)
 
+# Get coordinates x, y, Cell subtype and cellType (2D Data)
 df_Region_1 = df_Region_1[['x', 'y', 'Cell Type', 'Cell subtype']]
-micro_per_pixel = 0.866
-scale =  micro_per_pixel
+# Calculate μm per px 
+# By dividing 4000/4536 = 0.881 and can also be 4000/4704 = 0.849, as Image size is 16mmx16mm and Image in pixel is 4704px x 4536px
+micro_per_pixel = 0.866 # Taking avg if both possibilities 
+scale =  micro_per_pixel # to convert given pixel in micro meter unit
 df_Region_1['x'] =  scale * df_Region_1['x']
 df_Region_1['y'] =  scale * df_Region_1['y']
+
+# Create two data frames each for endothelial cells and all other cells
 df_Region_1_vessel = df_Region_1.loc[df_Region_1['Cell Type'] == 'Endothelial']
 df_Region_1_immmune = df_Region_1.loc[df_Region_1['Cell Type'] != 'Endothelial']
 
-
-
+# Define list variables to store 
 x_list = []
 y_list = []
 xv_list = []
@@ -60,6 +64,7 @@ new_x = []
 new_y = []
 new_dist = []
 
+# Storing the scaled values
 x_list = df_Region_1_immmune['x'].values.tolist()
 y_list = df_Region_1_immmune['y'].values.tolist()
 xv_list = df_Region_1_vessel['x'].values.tolist()
@@ -71,11 +76,15 @@ print(len(xv_list))
 print(len(yv_list))
 temp_x = 0
 temp_y = 0
+
+# Calculating nearest endothelial cell
 for i in range(len(x_list)):
-    min_dist = 500
+    # (Source) Weber GM, Ju Y, Börner K. Considerations for Using the Vasculature as a Coordinate System to Map All the Cells in the Human Body. Front Cardiovasc Med. 2020 Mar 13;7:29. doi: 10.3389/fcvm.2020.00029. PMID: 32232057; PMCID: PMC7082726.
+    min_dist = 1000 # The distance can be atmost 1mm so that cells can get oxygen 
     has_near = False
     for j in range(len(xv_list)):
         if abs(x_list[i] - xv_list[j]) < min_dist and abs(y_list[i] - yv_list[j]) < min_dist:
+            # Euclidean distance calculation
             dist = math.sqrt((x_list[i] - xv_list[j]) ** 2 + (y_list[i] - yv_list[j]) ** 2 )
             if dist < min_dist:
                 has_near = True
@@ -84,6 +93,7 @@ for i in range(len(x_list)):
                 temp_y = yv_list[j]
     new_x.append(temp_x)
     new_y.append(temp_y)
+    # If no endothelial cells within 1000μm distance then assign -1 
     if has_near == False:
         new_dist.append(-1)
     else:
@@ -96,28 +106,25 @@ margin_index = 0.05
 x_margin = (x_max - x_min) * margin_index
 y_margin = (y_max - y_min) * margin_index
 
-
-
+# Add values to new columns keeping track of nearest endothelial cell coordinates
 df_Region_1_immmune['XV'] = new_x
 df_Region_1_immmune['YV'] = new_y
 df_Region_1_immmune['MinDistance'] = new_dist
 
+# Take all cells with positive distance
 new_line_df = df_Region_1_immmune.loc[df_Region_1_immmune['MinDistance'] > 0 ]
 
+# This function generates line
 def generate_one_line_df(df, key):
     line_x = [None] * (len(df) * 2)
     line_y = [None] * (len(df) * 2)
     
-
-   
-
     line_x[::2] = df[f"X{key}"]
     line_y[::2] = df[f"Y{key}"]
     
     line_x[1::2] = df["x"]
     line_y[1::2] = df["y"]
     
-
     l_data = dict()
     l_data["x"] = line_x
     l_data["y"] = line_y
@@ -133,6 +140,7 @@ def generate_one_line_df(df, key):
 
 df_Region_1_immmune_one = generate_one_line_df(new_line_df, key='V')
 
+# Initialize color values for up to 26 cell types
 color_c = []
 color_c = px.colors.qualitative.Alphabet
 
@@ -167,6 +175,7 @@ color_c = px.colors.qualitative.Alphabet
 # 'CD4+ T cell':'CD4+ T cell',
 # 'CD7+ Immune': 'CD7+ Immune',
 
+# Create cell dictionary storing colour, shape and cell subtype information
 cell_dict = {
     'NK': {
         'legend': "NK",
@@ -436,8 +445,8 @@ cell_dict = {
  
 }
 
-
-
+# Define functions to generate scatter plots
+# Reference code from line 450 to 695: https://github.com/hubmapconsortium/vccf-visualization-2022
 def generate_nuclei_scatter(df, ct, visible=True, show_legend=True, legend_group=""):
     return go.Scatter(x=df[df['Cell Type'] == ct]["x"],
                         y=df[df['Cell Type'] == ct]["y"],
@@ -447,12 +456,10 @@ def generate_nuclei_scatter(df, ct, visible=True, show_legend=True, legend_group
                         mode="markers",
                         # text=df[df['Cell Type'] == ct]['Cell Type'],
                         hovertemplate='Cell Type: <br>X: %{x}<br>Y: %{y}',
-                        
                         showlegend=show_legend,
                         legendgroup=legend_group,
                         legendgrouptitle_text=legend_group,
                         marker=dict(
-                            
                             color= cell_dict[ct]["color"],
                             symbol=cell_dict[ct]['marker'],
                             opacity=0.75,
@@ -461,7 +468,6 @@ def generate_nuclei_scatter(df, ct, visible=True, show_legend=True, legend_group
                                 width=0
                             )),
                         visible=visible)
-
 
 def generate_other_scatter(df, key, name, symbol_name, visible=True, show_legend=True, legend_group=""):
     return go.Scatter(x=df[f"X{key}"], y=df[f"Y{key}"],
@@ -473,8 +479,7 @@ def generate_other_scatter(df, key, name, symbol_name, visible=True, show_legend
                         showlegend=show_legend,
                         legendgroup=legend_group,
                         legendgrouptitle_text=legend_group,
-                        marker=dict(
-                            
+                        marker=dict(        
                             color=cell_dict[symbol_name]["color"],
                             symbol=cell_dict[symbol_name]['marker'],
                             opacity=0.5,
@@ -482,7 +487,6 @@ def generate_other_scatter(df, key, name, symbol_name, visible=True, show_legend
                                 color=cell_dict[symbol_name]["color"],
                                 width=0)),
                         visible=visible)
-
 
 def generate_line(df, name, color, visible=True, opacity=0.5, width=1, show_legend=True, legend_group=""):
     return go.Scatter(x=df["x"],
@@ -517,11 +521,6 @@ traces_vessel_line = generate_line(df_Region_1_immmune_one, name=f"Distance-{cel
 traces_n.extend([trace_v, traces_vessel_line])
 main_fig_count = len(traces_n)
 
-
-
-
-
-
 # image_hyperlink = f'https://raw.githubusercontent.com/hubmapconsortium/vccf-visualization-release/main/vheimages/S002_VHE_region_0{region_index:02d}.jpg'
 main_subtitle = f'<br><sup>Region {region_index} / Donor {unique_regions[int(region_index) - 1]}  </sup>'
 # main_subtitle = f'<br><sup>Region {region_index} / Donor {unique_regions[region_index]}  <a href="{image_hyperlink}">Virtual H&E Image Preview</a></sup>'
@@ -544,17 +543,6 @@ figure = make_subplots(
 for trace_n in traces_n:
     figure.add_trace(trace_n,1,1)
 
-
-
-
-# figure.update_layout(
-#     scene=dict(
-#         aspectmode='data',
-#     ),
-# )
-
-
-
 import plotly.graph_objects as go
 for cell_list, col in zip([nuclei_type_list, ],
                                           [1, ]):
@@ -563,8 +551,6 @@ for cell_list, col in zip([nuclei_type_list, ],
     hist_names = []
     
     for cell_type in cell_list:
-
-        
         data = df_Region_1_immmune[df_Region_1_immmune['Cell Type'] == cell_type]["MinDistance"]
         print(cell_type, data.size)
         if data.size > 5:
@@ -573,10 +559,8 @@ for cell_list, col in zip([nuclei_type_list, ],
         
     fig2 = ff.create_distplot(hist_data, hist_names, histnorm='probability')  # , curve_type='normal')
 
-
     for i in range(len(hist_data)):
-            
-            
+             
             figure.add_trace(go.Histogram(
                 x=df_Region_1_immmune[df_Region_1_immmune['Cell Type'] == hist_names[i]]["MinDistance"],
                 # xbins=100,
@@ -606,13 +590,7 @@ for cell_list, col in zip([nuclei_type_list, ],
                      tickvals=[0.1 * (i + 1) for i in range(len(hist_names))], ticktext=hist_names, 
                      row=3, col=col)
     figure.update_xaxes(tickfont=dict(color='rgba(0,0,0,0)', size=1), row=2, col=col)
-
-
-
-
-           
-            
-    
+ 
 # Invisble scale for keep space instant
 invisible_scale = go.Scatter(
     name="",
@@ -646,37 +624,6 @@ histogram_layout_buttons = list([
 ])
 layer_select_buttons = []
 
-# # Create and add slider
-# steps = []
-# for i in range(z_count + 1):
-#     title = f"{str(i)}" if i != 0 else "All"
-#     step = dict(
-#         label=title,
-#         method="update",
-#         args=[{"visible": [False] * len(figure.data),
-#                "showlegend": [False] * len(figure.data)},
-#               {"title": ""}],  # layout attribute
-#     )
-#     for f in range(main_fig_count):
-#         step["args"][0]["visible"][i * main_fig_count + f] = True  # Toggle i'th trace to "visible"
-#         step["args"][0]["showlegend"][i * main_fig_count + f] = True
-#     rest = len(figure.data) - (z_count + 1) * main_fig_count
-#     for h in range(1, rest + 1):
-#         step["args"][0]["visible"][-h] = True
-#     steps.append(step)
-# layer_select_buttons = steps
-
-# sliders = [dict(
-#     active=0,
-#     currentvalue={"prefix": "Slide: "},
-#     pad={"t": 0, "b": 0},
-#     steps=steps,
-#     yanchor='top', y=1,
-#     xanchor='right', x=1,
-#     lenmode='fraction', len=0.25
-# )]
-
-
 # layout update
 for annotation in figure['layout']['annotations'][:1]:
     annotation['x'] = 0
@@ -695,17 +642,13 @@ for annotation in figure['layout']['annotations'][1:]:
         size=18, )
 
 background_color = 'rgb(240,246,255)'
-
-
 figure.update_yaxes(rangemode='tozero', tickfont=dict(size=12), row=2)
 figure.update_yaxes(rangemode='tozero', tickfont=dict(size=8), row=3)
 figure.update_xaxes(rangemode='tozero', tickfont=dict(size=12), row=2)
 figure.update_xaxes(rangemode='tozero', tickfont=dict(size=12), row=3)
 figure.update_xaxes(ticklabelposition="outside", side="bottom",
                  title=dict(text="Distance (μm)", standoff=5, font_size=14), row=3, )
-
 figure.update_xaxes(range=[0, 210], row=3, col=1)
-
 figure.update_yaxes(ticklabelposition="outside", side="left",
                  title=dict(text="Count #", standoff=5, font_size=14), row=2, col=1)
 figure.update_traces(connectgaps=False, selector=dict(type="Scatter3d"))
@@ -721,8 +664,6 @@ figure.update_layout(
             y=-0.06,
             yanchor="bottom"
         ),
-
-
     ],
     font=dict(
         family="Arial, Bahnschrift",
@@ -753,11 +694,10 @@ figure.update_layout(
 
 )
 
-
+# Sate path to store .html file
 figure.write_html(os.path.join('/Users/himanishah/Desktop/VCCF_Computations/Intestine_64_data/html_vccf', f"Region_{region_index}.html"))
-
+# Sate path to store .png file
 figure.write_image(os.path.join('/Users/himanishah/Desktop/VCCF_Computations/Intestine_64_data/images_vccf', f"Region_{region_index}.png"))
-
 
 # export as static image
 # pio.write_image(figure, os.path.join('/Users/himanishah/Desktop/VCCF_Computations/Intestine_64_data/images_vccf', f"Region_{region_index}.png"))

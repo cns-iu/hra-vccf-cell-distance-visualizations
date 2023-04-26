@@ -14,6 +14,7 @@ import warnings
 warnings.simplefilter('ignore')
 
 
+# # Store types of unique Images before splitting using vccf_splitter.py
 unique_images= ['10_31742_1_2' , '20_31789_14_2' , '16_31772_4_5' , '6_31730_10_11'
  , '8_31736_12_17' , '6_31731_15_8' , '6_31727_8_9' , '20_31791_18_13'
  , '8_31736_12_19' , '8_31738_6_17' , '6_31729_10_1' , '10_31740_16_6'
@@ -67,22 +68,31 @@ unique_images= ['10_31742_1_2' , '20_31789_14_2' , '16_31772_4_5' , '6_31730_10_
  , '12_31754_16_15' , '20_31787_5_16' , '20_31790_13_14' , '8_31735_12_9'
  , '14_31761_16_20' , '16_31769_3_7' , '6_31730_11_1' , '16_31766_3_2']
 
-
+# Take input Image number within Range 1 to 209
 image_index = sys.argv[1]
 
+# Get the path to respective Image
 path = r'/u/shahhi/vccf_computations_data/Placenta_209_data/Image_' + str(image_index) + '.csv'
 df_point = pd.read_csv(path)
 
+# Get coordinates x, y and cellType (2D Data)
 df_Region_1 = df_point[['centroid0', 'centroid1', 'lineage']]
 
+# Here we assume (centroid0, centroid1 and lineage) as  (x, y and cellType)
 df_Region_1 .rename(columns={'centroid0': 'x', 'centroid1': 'y', 'lineage': 'Cell Type' }, inplace=True)
+
+# Calculate μm per px 
+# By dividing 800/2046, as Image size is 800μmx800μm and Image in pixel is 2046px x 2046px
 micro_per_pixel = 0.391
-scale =  micro_per_pixel
+scale =  micro_per_pixel # to convert given pixel in micro meter unit
 df_Region_1['x'] =  scale * df_Region_1['x']
 df_Region_1['y'] =  scale * df_Region_1['y']
+
+# Create two data frames each for endothelial cells and all other cells
 df_Region_1_vessel = df_Region_1.loc[df_Region_1['Cell Type'] == 'Endothelial']
 df_Region_1_immmune = df_Region_1.loc[df_Region_1['Cell Type'] != 'Endothelial']
 
+# Define list variables to store 
 x_list = []
 y_list = []
 xv_list = []
@@ -91,6 +101,7 @@ new_x = []
 new_y = []
 new_dist = []
 
+# Storing the scaled values
 x_list = df_Region_1_immmune['x'].values.tolist()
 y_list = df_Region_1_immmune['y'].values.tolist()
 xv_list = df_Region_1_vessel['x'].values.tolist()
@@ -101,11 +112,14 @@ print(len(y_list))
 print(len(xv_list))
 print(len(yv_list))
 
+# Calculating nearest endothelial cell
 for i in range(len(x_list)):
-    min_dist = 1000
+    # (Source) Weber GM, Ju Y, Börner K. Considerations for Using the Vasculature as a Coordinate System to Map All the Cells in the Human Body. Front Cardiovasc Med. 2020 Mar 13;7:29. doi: 10.3389/fcvm.2020.00029. PMID: 32232057; PMCID: PMC7082726.
+    min_dist = 1000 # The distance can be atmost 1mm so that cells can get oxygen
     has_near = False
     for j in range(len(xv_list)):
         if abs(x_list[i] - xv_list[j]) < min_dist and abs(y_list[i] - yv_list[j]) < min_dist:
+            # Euclidean distance calculation
             dist = math.sqrt((x_list[i] - xv_list[j]) ** 2 + (y_list[i] - yv_list[j]) ** 2 )
             if dist < min_dist:
                 has_near = True
@@ -114,6 +128,7 @@ for i in range(len(x_list)):
                 temp_y = yv_list[j]
     new_x.append(temp_x)
     new_y.append(temp_y)
+    # If no endothelial cells within 1000μm distance then assign -1 
     if has_near == False:
         new_dist.append(-1)
     else:
@@ -126,20 +141,18 @@ margin_index = 0.05
 x_margin = (x_max - x_min) * margin_index
 y_margin = (y_max - y_min) * margin_index
 
-
-
+# Add values to new columns keeping track of nearest endothelial cell coordinates
 df_Region_1_immmune['XV'] = new_x
 df_Region_1_immmune['YV'] = new_y
 df_Region_1_immmune['MinDistance'] = new_dist
 
+# Take all cells with positive distance
 new_line_df = df_Region_1_immmune.loc[df_Region_1_immmune['MinDistance'] > 0 ]
 
+# This function generates line
 def generate_one_line_df(df, key):
     line_x = [None] * (len(df) * 2)
     line_y = [None] * (len(df) * 2)
-    
-
-   
 
     line_x[::2] = df[f"X{key}"]
     line_y[::2] = df[f"Y{key}"]
@@ -147,7 +160,6 @@ def generate_one_line_df(df, key):
     line_x[1::2] = df["x"]
     line_y[1::2] = df["y"]
     
-
     l_data = dict()
     l_data["x"] = line_x
     l_data["y"] = line_y
@@ -160,14 +172,13 @@ def generate_one_line_df(df, key):
     l_df_one.loc[l_df_one.isnull().any(axis=1), :] = np.nan
     return l_df_one
 
-
-
 df_Region_1_immmune_one = generate_one_line_df(new_line_df, key='V')
 
+# Initialize color values for up to 26 cell types
 color_c = []
 color_c = px.colors.qualitative.Alphabet
 
-
+# Create cell dictionary storing colour, shape and cell subtype information
 cell_dict = {
     'Mac2a': {
         'legend': "Mac2a",
@@ -323,17 +334,6 @@ cell_dict = {
         'histogram_location': [3, 1],
     },
 
-      # Mac2a', 'other', 'NK1', 'Fibroblasts', 'NKT', 'Endothelial',
-      #  'Myofibroblasts', 'Mac1a', 'EVT1a', 'Mac1b', 'CD8T', 'EVT1b',
-      #  'Mac2c', 'NK2', 'muscle', 'NK3', 'EVT2', 'Mac2b', 'Fibroblasts',
-      #  'Glandular', 'CD4T', 'EVT1c', 'Placental_Mac', 'NK4', 'Mast',
-      #  'Treg'
-
-      # ['Mac2a', 'other', 'NK1', 'Fibroblasts', 'NKT', 'Endothelial',
-      #  'Myofibroblasts', 'Mac1a', 'EVT1a', 'Mac1b', 'CD8T', 'EVT1b',
-      #  'Mac2c', 'NK2', 'muscle', 'NK3', 'EVT2', 'Mac2b', 'DC',
-      #  'Glandular', 'CD4T', 'EVT1c', 'Placental_Mac', 'NK4', 'Mast',
-      #  'Treg']
     'muscle': {
         'legend': "muscle",
         'full': "muscle",
@@ -461,19 +461,17 @@ cell_dict = {
  
 }
 
-# region_index = 1
-
+# Define functions to generate scatter plots
+# Reference code from line 466 to 705: https://github.com/hubmapconsortium/vccf-visualization-2022
 def generate_nuclei_scatter(df, ct, visible=True, show_legend=True, legend_group=""):
     return go.Scatter(x=df[df['Cell Type'] == ct]["x"],
                         y=df[df['Cell Type'] == ct]["y"],
-                        
                         mode="markers",
                         name=cell_dict[cell_type]['legend'],
                         showlegend=show_legend,
                         legendgroup=legend_group,
                         legendgrouptitle_text=legend_group,
-                        marker=dict(
-                            
+                        marker=dict(  
                             color= cell_dict[ct]["color"],
                             symbol=cell_dict[ct]['marker'],
                             opacity=0.75,
@@ -483,7 +481,6 @@ def generate_nuclei_scatter(df, ct, visible=True, show_legend=True, legend_group
                             )),
                         visible=visible)
 
-
 def generate_other_scatter(df, key, name, symbol_name, visible=True, show_legend=True, legend_group=""):
     return go.Scatter(x=df[f"X{key}"], y=df[f"Y{key}"],
                         mode="markers",
@@ -491,8 +488,7 @@ def generate_other_scatter(df, key, name, symbol_name, visible=True, show_legend
                         showlegend=show_legend,
                         legendgroup=legend_group,
                         legendgrouptitle_text=legend_group,
-                        marker=dict(
-                            
+                        marker=dict(                      
                             color=cell_dict[symbol_name]["color"],
                             symbol=cell_dict[symbol_name]['marker'],
                             opacity=0.5,
@@ -501,11 +497,9 @@ def generate_other_scatter(df, key, name, symbol_name, visible=True, show_legend
                                 width=0)),
                         visible=visible)
 
-
 def generate_line(df, name, color, visible=True, opacity=0.5, width=1, show_legend=True, legend_group=""):
     return go.Scatter(x=df["x"],
-                        y=df["y"],
-                        
+                        y=df["y"],    
                         mode="lines",
                         name=name,
                         opacity=opacity,
@@ -534,11 +528,6 @@ traces_vessel_line = generate_line(df_Region_1_immmune_one, name=f"Distance-{cel
 traces_n.extend([trace_v, traces_vessel_line])
 main_fig_count = len(traces_n)
 
-
-
-
-
-
 # image_hyperlink = f'https://raw.githubusercontent.com/hubmapconsortium/vccf-visualization-release/main/vheimages/S002_VHE_region_0{image_index:02d}.jpg'
 main_subtitle = f'<br><sup>Image {image_index} </sup>'
 hist_subtitle = '<br><sup>Histogram</sup>'
@@ -558,17 +547,11 @@ figure = make_subplots(
 
 for trace_n in traces_n:
     figure.add_trace(trace_n,1,1)
-
-
-
-
 figure.update_layout(
     scene=dict(
         aspectmode='data',
     ),
 )
-
-
 
 import plotly.graph_objects as go
 for cell_list, col in zip([nuclei_type_list, ],
@@ -578,8 +561,6 @@ for cell_list, col in zip([nuclei_type_list, ],
     hist_names = []
     
     for cell_type in cell_list:
-
-        
         data = df_Region_1_immmune[df_Region_1_immmune['Cell Type'] == cell_type]["MinDistance"]
         print(cell_type, data.size)
         if data.size > 5:
@@ -587,11 +568,7 @@ for cell_list, col in zip([nuclei_type_list, ],
             hist_names.append(cell_type)
         
     fig2 = ff.create_distplot(hist_data, hist_names, histnorm='probability')  # , curve_type='normal')
-
-
-    for i in range(len(hist_data)):
-            
-            
+    for i in range(len(hist_data)):     
             figure.add_trace(go.Histogram(
                 x=df_Region_1_immmune[df_Region_1_immmune['Cell Type'] == hist_names[i]]["MinDistance"],
                 # xbins=100,
@@ -622,12 +599,6 @@ for cell_list, col in zip([nuclei_type_list, ],
                      row=3, col=col)
     figure.update_xaxes(tickfont=dict(color='rgba(0,0,0,0)', size=1), row=2, col=col)
 
-
-
-
-           
-            
-    
 # Invisble scale for keep space instant
 invisible_scale = go.Scatter(
     name="",
@@ -705,13 +676,10 @@ figure.update_layout(
             y=-0.06,
             yanchor="bottom"
         ),
-
-
     ],
     font=dict(
         family="Arial, Bahnschrift",
-        size=12,
-       
+        size=12, 
     ),
     margin=dict(
         l=5,
@@ -736,4 +704,5 @@ figure.update_layout(
 
 )
 
+# Sate path to store .html file
 figure.write_html(os.path.join('/u/shahhi/vccf_computations_data/html_vccf', f"Image_{image_index}.html"))
