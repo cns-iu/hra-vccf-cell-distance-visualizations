@@ -18,6 +18,10 @@ This Python script converts the processed data from the previous step into an OM
 
 This notebook generates a Vitessce visualization using data in the OME-TIFF format. There are two ways to view the visualization: locally as a data export for the HuBMAP publication page or online using vitessce.io for online preview. The `OUTPUT_LEVEL` parameter is used to determine which way to use. The script downloads the necessary image and CSV files, sets up the Vitessce configuration, and creates the visualization. The resulting visualization can be viewed on vitessce.io or exported as a JSON file for further use.
 
+## json_layout_customizer.py
+
+The `json_layout_customizer.py` script is designed to automatically edit and enhance the default layout of Vitessce visualization JSON files within a specified directory and its subdirectories. By targeting the "spatial" component, the script adjusts its width and aligns other components accordingly, enabling a streamlined customization of Vitessce visualizations. This is particularly useful for bulk adjustments where manual editing can be cumbersome. The spatial width can be customized using the `spatial_width` parameter (default `10.0`).
+
 ## Dependencies
 
 This project has the following dependencies:
