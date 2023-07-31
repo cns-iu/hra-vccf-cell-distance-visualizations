@@ -36,10 +36,13 @@ unique_regions = ['B004_Ascending', 'B005_Ascending' ,'B006_Ascending' ,'B009_Ri
 
 
 # Take input Region number within Range 1 to 64
-region_index = sys.argv[1]
+region_index = 3
+if len(sys.argv) > 1:
+    region_index = sys.argv[1]
 
 # Get the path to respective Image
-path = r'/Users/himanishah/Desktop/VCCF_Computations/Intestine_64_data/Region_' + str(region_index) + '.csv'
+root_path = r'G:\HuBMAP\Hickey\Intestine_64_data'
+path = root_path + r'/Region_' + str(region_index) + '.csv'
 df_Region_1 = pd.read_csv(path)
 
 # Get coordinates x, y, Cell subtype and cellType (2D Data)
@@ -110,6 +113,25 @@ y_margin = (y_max - y_min) * margin_index
 df_Region_1_immmune['XV'] = new_x
 df_Region_1_immmune['YV'] = new_y
 df_Region_1_immmune['MinDistance'] = new_dist
+
+# Save the data frame to csv file for vitessce
+df = pd.DataFrame({
+    'x': xv_list,
+    'y': yv_list,
+})
+df.to_csv(os.path.join(root_path, 'vitessce_raw', f"Region_{region_index}_vessels.csv"), index=False)
+
+df = pd.DataFrame({
+    'x': x_list,
+    'y': y_list,
+    'xv': new_x,
+    'yv': new_y,
+    'type': df_Region_1_immmune['Cell Type'],
+    'group': df_Region_1_immmune['Cell subtype'],
+})
+df.to_csv(os.path.join(root_path, 'vitessce_raw', f"Region_{region_index}_nuclei.csv"), index=False)
+
+exit()
 
 # Take all cells with positive distance
 new_line_df = df_Region_1_immmune.loc[df_Region_1_immmune['MinDistance'] > 0 ]
@@ -695,9 +717,9 @@ figure.update_layout(
 )
 
 # Sate path to store .html file
-figure.write_html(os.path.join('/Users/himanishah/Desktop/VCCF_Computations/Intestine_64_data/html_vccf', f"Region_{region_index}.html"))
+figure.write_html(os.path.join(root_path, 'html_vccf', f"Region_{region_index}.html"))
 # Sate path to store .png file
-figure.write_image(os.path.join('/Users/himanishah/Desktop/VCCF_Computations/Intestine_64_data/images_vccf', f"Region_{region_index}.png"))
+figure.write_image(os.path.join(root_path, 'images_vccf', f"Region_{region_index}.png"))
 
 # export as static image
 # pio.write_image(figure, os.path.join('/Users/himanishah/Desktop/VCCF_Computations/Intestine_64_data/images_vccf', f"Region_{region_index}.png"))
