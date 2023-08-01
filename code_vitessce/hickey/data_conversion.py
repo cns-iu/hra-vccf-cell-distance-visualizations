@@ -84,7 +84,7 @@ def main():
     # construct the 'link' table and generate vertices
     link_table = nuclei_df[["type", "x", "y", "xv", "yv", "group"]].copy()
     link_table["vertices"] = link_table.apply(lambda row: generate_link_vertices(
-        row["x"], row["y"], row["xv"], row["xv"]), axis=1)
+        row["x"], row["y"], row["xv"], row["yv"]), axis=1)
     link_table["type"] = link_table["type"].apply(lambda x: x + "_link")
 
     groups = nuclei_df["group"].unique()
