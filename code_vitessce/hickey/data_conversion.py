@@ -19,7 +19,7 @@ def generate_cross_vertices(x, y, radius):
 
 
 def generate_cell_vertices(x, y, radius, num_vertices=12):
-    angles = np.linspace(0, 2 * np.pi, num_vertices)
+    angles = np.linspace(0, 2 * np.pi, num_vertices+1)
     vertices = [
         (x + np.cos(angle) * radius, y + np.sin(angle) * radius) for angle in angles
     ]
@@ -27,7 +27,7 @@ def generate_cell_vertices(x, y, radius, num_vertices=12):
 
 
 def generate_random_cell_vertices(x, y, radius, num_vertices=12):
-    angles = np.linspace(0, 2 * np.pi, num_vertices)
+    angles = np.linspace(0, 2 * np.pi, num_vertices+1)
     vertices = []
     # Add randomness to radius and angle
     random_radius = np.random.uniform(0.9 * radius, 1.1 * radius)
