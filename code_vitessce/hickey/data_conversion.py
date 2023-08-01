@@ -51,6 +51,7 @@ def main():
     # Default region_index
     region_index = 3
     scale = 1
+    universal_size = 8
 
     # Check if at least one command-line argument is given
     if len(sys.argv) >= 2:
@@ -74,7 +75,7 @@ def main():
     # construct the 'cell' table for the vessel data and generate vertices
     # Here I used a fixed radius for 'vessel', adjust as needed
     vessel_df["vertices"] = vessel_df.apply(
-        lambda row: generate_random_cell_vertices(row["x"], row["y"], radius=16), axis=1)
+        lambda row: generate_random_cell_vertices(row["x"], row["y"], radius=universal_size), axis=1)
     vessel_df["group"] = "vessel"
     final_cell_table = pd.concat([vessel_df], ignore_index=True)
 
@@ -92,20 +93,19 @@ def main():
     for group in groups:
         # filter out the rows where type is one of the specified values
         cell_types = nuclei_df[nuclei_df["group"] == group]["type"].unique()
-        average_size = 16
         filtered_df = nuclei_df[nuclei_df["type"].isin(cell_types)]
 
         # construct the 'cell' table and generate vertices
         cell_table = filtered_df[["type", "x", "y"]].copy()
         if group == "Epithelial":
             cell_table["vertices"] = cell_table.apply(
-                lambda row: generate_cross_vertices(row["x"], row["y"], 16), axis=1)
+                lambda row: generate_cross_vertices(row["x"], row["y"], universal_size), axis=1)
         elif group == "Immune":
             cell_table["vertices"] = cell_table.apply(
-                lambda row: generate_cell_vertices(row["x"], row["y"], 16), axis=1)
+                lambda row: generate_cell_vertices(row["x"], row["y"], universal_size), axis=1)
         elif group == "Stromal":
             cell_table["vertices"] = cell_table.apply(
-                lambda row: generate_cell_vertices(row["x"], row["y"], 16, num_vertices=4), axis=1)
+                lambda row: generate_cell_vertices(row["x"], row["y"], universal_size, num_vertices=4), axis=1)
         else:
             print("unknown group: ", group)
         cell_table["group"] = group
