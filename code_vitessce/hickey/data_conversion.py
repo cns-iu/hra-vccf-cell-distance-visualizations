@@ -123,3 +123,10 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# PS code
+# for ($i=1; $i -le 64; $i++) {
+#     Write-Host "Running python .\data_conversion.py $i"
+#     python .\data_conversion.py $i
+# }

@@ -139,3 +139,9 @@ print("Saving masks...")
 tif_name = f'Region_{region_index}_mask.ome.tif'
 multiplex_img_to_ome_tiff(bitmask_arr, final_types, os.path.join(
     nuclei_root_path, tif_name), axes="CYX")
+
+# PS code
+# for ($i=1; $i -le 64; $i++) {
+#     Write-Host "Running python .\ome_tiff_generator.py $i"
+#     python .\ome_tiff_generator.py $i
+# }
