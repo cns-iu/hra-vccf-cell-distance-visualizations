@@ -145,3 +145,10 @@ multiplex_img_to_ome_tiff(bitmask_arr, final_types, os.path.join(
 #     Write-Host "Running python .\ome_tiff_generator.py $i"
 #     python .\ome_tiff_generator.py $i
 # }
+
+# Linux pyramid commands
+# for i in {1..64}
+# do
+#   ./bftools/bfconvert -tilex 512 -tiley 512 -pyramid-resolutions 6 -pyramid-scale 2 -compression LZW /mnt/g/HuBMAP/Hickey/Intestine_64_data/vitessce_raw/Region_${i}_mask.ome.tif /mnt/g/HuBMAP/Hickey/Intestine_64_data/vitessce_raw/hickey_vccf_data/Region_${i}_mask.pyramid.ome.tif
+# done
+
