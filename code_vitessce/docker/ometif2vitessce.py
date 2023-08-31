@@ -23,7 +23,7 @@ def download_file(url, destination):
     os.system(f"curl -L -o {destination} {url}")
 
 
-def vitessce_main(output_folder, OUTPUT_LEVEL, img_path, img_url, region_id, official_region_id,
+def vitessce_main(output_folder, OUTPUT_LEVEL, img_path, img_url, region_id, official_region_id, layer_count,
                   csv_url=None, csv_path=None, options=None):
     vc = VitessceConfig(schema_version="1.0.15",
                         name='Transcriptomics example')
@@ -44,6 +44,16 @@ def vitessce_main(output_folder, OUTPUT_LEVEL, img_path, img_url, region_id, off
     spatial_plot = vc.add_view(cm.SPATIAL, dataset=dataset)
     layer_controller = vc.add_view(cm.LAYER_CONTROLLER, dataset=dataset)
 
+    channels_list = [
+        {
+            "selection": {"c": i, "t": 0, "z": 0},
+            "color": [0, 0, 0],
+            "visible": True,
+            "slider": [i, i+1]
+        }
+        for i in range(layer_count)
+    ]
+
     spatial_segmentation_layer_value = [{
         "type": "bitmask",
         "index": 0,
@@ -54,22 +64,9 @@ def vitessce_main(output_folder, OUTPUT_LEVEL, img_path, img_url, region_id, off
         "transparentColor": None,
         "renderingMode": "Additive",
         "use3d": False,
-        "channels": [
-            # VCCF
-                {"selection": {"c": 0, "t": 0, "z": 0}, "color": [
-                    0, 0, 0], "visible":True, "slider":[0, 1]},
-                {"selection": {"c": 1, "t": 0, "z": 0}, "color": [
-                    0, 0, 0], "visible":True, "slider":[1, 2]},
-                {"selection": {"c": 2, "t": 0, "z": 0}, "color": [
-                    0, 0, 0], "visible":True, "slider":[2, 3]},
-                {"selection": {"c": 3, "t": 0, "z": 0}, "color": [
-                    0, 0, 0], "visible":True, "slider":[3, 4]},
-                {"selection": {"c": 4, "t": 0, "z": 0}, "color": [
-                    0, 0, 0], "visible":True, "slider":[4, 5]},
-                {"selection": {"c": 5, "t": 0, "z": 0}, "color": [
-                    0, 0, 0], "visible":True, "slider":[5, 6]},
-        ]
+        "channels": channels_list
     }]
+
     cell_sets_view = vc.add_view(cm.OBS_SETS, dataset=dataset)
     obs_set_color = [
         {"path": ["Cell Type", "vessel"], "color": [255, 0, 0]},
@@ -249,11 +246,11 @@ def main(args):
         EUI_SOURCE = args.EUI_SOURCE
         print("EUI_SOURCE (optional): ", EUI_SOURCE)
 
+    # PROJECT_NAME is optional
+    FINAL_ZIP_NAME = 'vignette'
     if args.PROJECT_NAME:
-        FINAL_ZIP_NAME = args.PROJECT_NAME + '_vignette'
+        FINAL_ZIP_NAME += '_' + args.PROJECT_NAME
         print("PROJECT_NAME (optional): ", args.PROJECT_NAME)
-    else:
-        FINAL_ZIP_NAME = 'vignette'
 
     # create a directory to store images if it doesn't exist
     print("Creating image directory...", IMG_ROOT)
@@ -268,6 +265,7 @@ def main(args):
         PRO_REGION_NAMES = info_df['pro_region'].tolist()
     else:
         PRO_REGION_NAMES = info_df['region'].tolist()
+    LAYER_COUNTS = info_df['layers'].tolist()
     if DATA_SOURCE == 'LOCAL':
         IMAGE_NAMES = info_df['image_name'].tolist()
         IMAGE_URLS = []
@@ -332,6 +330,7 @@ def main(args):
         region_name = REGION_NAMES[idx]
         official_region_id = PRO_REGION_NAMES[idx]
         img_path = img_full_paths[idx]
+        layer_count = LAYER_COUNTS[idx]
         if len(IMAGE_URLS) > 0:
             img_url = IMAGE_URLS[idx]
         else:
@@ -341,18 +340,20 @@ def main(args):
         print(" - Filepath: ", img_path)
         print(" - Image URL: ", img_url)
         print(" - Official Region ID: ", official_region_id)
+        print(" - Layer Count: ", layer_count)
 
         vitessce_main(output_folder=OUTPUT_ROOT, OUTPUT_LEVEL=OUTPUT_LEVEL,
                       img_path=img_path,
                       img_url=img_url,
                       region_id=region_name, official_region_id=official_region_id,
+                      layer_count=layer_count,
                       csv_url=csv_url if COLOR_SCHEME_CSV else None,
                       csv_path=csv_path if COLOR_SCHEME_CSV else None,
                       options=options if COLOR_SCHEME_CSV else None
                       )
 
     # EUI
-    if EUI_SOURCE:        
+    if EUI_SOURCE:
         print("Generating EUI visualization...")
         vitessce_eui(output_folder=OUTPUT_ROOT, OUTPUT_LEVEL=OUTPUT_LEVEL, region_id=str(len(REGION_NAMES)+1),
                      eui_img_full_path=eui_path,
