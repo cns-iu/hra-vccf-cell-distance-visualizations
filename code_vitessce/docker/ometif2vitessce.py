@@ -1,3 +1,4 @@
+import argparse
 from vitessce import CsvWrapper, DataType
 from IPython.display import display, HTML
 import os
@@ -22,24 +23,22 @@ def download_file(url, destination):
     os.system(f"curl -L -o {destination} {url}")
 
 
-def vitessce_main(ROOT, OUTPUT_LEVEL, filepath, img_url, region_id, official_region_id=None, csv_url=None, csv_path=None, options=None):
+def vitessce_main(output_folder, OUTPUT_LEVEL, img_path, img_url, region_id, official_region_id,
+                  csv_url=None, csv_path=None, options=None):
     vc = VitessceConfig(schema_version="1.0.15",
                         name='Transcriptomics example')
-
-    if official_region_id is None:
-        official_region_id = region_id
 
     if OUTPUT_LEVEL == 1:
         # LOCAL
         dataset = vc.add_dataset(name='Cell segmentations').add_object(
-            OmeTiffWrapper(img_path=filepath, is_bitmask=True,
-                           name=f"Region {region_id} Segmentations")
+            OmeTiffWrapper(img_path=img_path, is_bitmask=True,
+                           name=f"Region {region_id} Visualization")
         ).add_object(CsvWrapper(csv_path=csv_path, data_type=DataType.OBS_SETS.value, options=options))
     else:
         # ONLINE PREVIEW
         dataset = vc.add_dataset(name='Cell segmentations').add_object(
             OmeTiffWrapper(img_url=img_url, is_bitmask=True,
-                           name=f"Region {region_id} Segmentations")
+                           name=f"Region {region_id} Visualization")
         ).add_object(CsvWrapper(csv_url=csv_url, data_type=DataType.OBS_SETS.value, options=options))
 
     spatial_plot = vc.add_view(cm.SPATIAL, dataset=dataset)
@@ -107,8 +106,9 @@ def vitessce_main(ROOT, OUTPUT_LEVEL, filepath, img_url, region_id, official_reg
     # THIS LINE WILL BE MODIFIED WHEN SAVED TO GITHUB
 
     PATH_TO_EXPORT_DIRECTORY = os.path.join(
-        ROOT, "data", f"vignette_{region_id}")
-    VIGNETTE_DIR = os.path.join(ROOT, "vignettes", f"vignette_{region_id}")
+        output_folder, "data", f"vignette_{region_id}")
+    VIGNETTE_DIR = os.path.join(
+        output_folder, "vignettes", f"vignette_{region_id}")
     # Export Vitessce config to JSON
     os.makedirs(VIGNETTE_DIR, exist_ok=True)
     # Export Vitessce config to JSON
@@ -131,7 +131,7 @@ This vignette visualizes Region {official_region_id}. The image shows the segmen
         f.write(vignette_md)
 
 
-def vitessce_eui(ROOT, OUTPUT_LEVEL, region_id, eui_img_full_path, eui_url):
+def vitessce_eui(output_folder, OUTPUT_LEVEL, region_id, eui_img_full_path, eui_url):
     vc = VitessceConfig(schema_version="1.0.15", name='EUI')
     if OUTPUT_LEVEL == 1:
         # LOCAL
@@ -153,8 +153,9 @@ def vitessce_eui(ROOT, OUTPUT_LEVEL, region_id, eui_img_full_path, eui_url):
     web_url = vc.web_app()
     display(HTML(f'View on Vitessce.io'))
 
-    PATH_TO_EXPORT_DIRECTORY = os.path.join(ROOT, "data", f"vignette_13")
-    VIGNETTE_DIR = os.path.join(ROOT, "vignettes", f"vignette_13")
+    PATH_TO_EXPORT_DIRECTORY = os.path.join(
+        output_folder, "data", f"vignette_13")
+    VIGNETTE_DIR = os.path.join(output_folder, "vignettes", f"vignette_13")
 # Export Vitessce config to JSON
     os.makedirs(VIGNETTE_DIR, exist_ok=True)
 # Export Vitessce config to JSON
@@ -188,57 +189,91 @@ def download_imgs(folder, image_urls):
     return full_paths
 
 
-if __name__ == '__main__':
-    # Define the image directory
-    img_path = './images'
+def main(args):
+    """
+    This function processes the visualization based on the provided arguments.
 
-    # Define the output root directory
-    OUTPUT = "hubmap-publication-page"
+    Parameters:
+        Required:
+            - IMG_ROOT (str): The root directory where images are stored.
+            - OUTPUT_ROOT (str): The root directory where output files will be saved.
+            - OUTPUT_LEVEL (int): Determines the output level. 
+                                0 indicates ONLINE PREVIEW, 
+                                1 indicates LOCAL EXPORT.
+            - DATA_SOURCE (str): Specifies the source of the data. 
+                                'LOCAL' means the data will be read from a local directory, 
+                                'NET' means the data will be downloaded from the provided URLs.
+            - INFO_CSV (str): Path to the CSV file containing hubmap data.
+        Optional:
+            - COLOR_SCHEME_CSV (str, optional): URL OR PATH to the CSV file containing cell data, depending on the DATA_SOURCE.
+                                                If not provided, a default scheme (random) will be used.
+            - EUI_SOURCE (str, optional): URL OR PATH to the EUI data, depending on the DATA_SOURCE.
+            -PROJECT_NAME',(str, optional): Project name for the final zip file. If not provided, the default name is 'vignette'.
 
-    # LOCAL=1, ONLINE=0
-    OUTPUT_LEVEL = 0
+    The function will process the images and generate visualizations based on the provided arguments.
+    """
 
-    # Define the official names of the regions
-    hubmap_names = {
-        1: "HBM732.FZVZ.656",
-        2: "HBM747.SPWK.779",
-        3: "HBM398.NCVN.256",
-        4: "HBM746.VTDZ.959",
-        5: "HBM875.SBHJ.939",
-        6: "HBM867.NMXL.794",
-        7: "HBM666.JCGS.862",
-        8: "HBM592.JGSQ.253",
-        9: "HBM494.XDQW.356",
-        10: "HBM238.ZKPC.934",
-        11: "HBM975.FVCG.922",
-        12: "HBM674.XQFQ.364",
-    }
+    # Check if IMG_ROOT is provided
+    assert args.IMG_ROOT, "IMG_ROOT directory not provided."
+    IMG_ROOT = args.IMG_ROOT
 
-    # define the ID names of the regions
-    region_names = ['1', '2', '3', '4', '5',
-                    '6', '7', '8', '9', '10', '11', '12']
+    # Check if OUTPUT_ROOT is provided
+    assert args.OUTPUT_ROOT, "OUTPUT_ROOT directory not provided."
+    OUTPUT_ROOT = args.OUTPUT_ROOT
 
-    # Define the URLs of the images
-    image_urls = [
-        rf'https://storagetuzi.blob.core.windows.net/blobtuzi/vccf_data/cell_table_region_{region}.ome.tif' for region in region_names]
+    # Check if OUTPUT_LEVEL is provided and valid
+    assert args.OUTPUT_LEVEL in [0, 1], "Invalid OUTPUT_LEVEL. Must be 0 or 1."
+    OUTPUT_LEVEL = args.OUTPUT_LEVEL
 
-    # define the optional color scheme for the cell sets
-    cell_data = {
-        'cell_id': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-        'cell_type': ['T-Killer', 'T-Helper', 'T-Reg', 'CD68', 'vessel',
-                      "T-Killer_link", 'T-Helper_link', 'T-Reg_link', 'CD68_link',
-                      'DDB2', 'P53', 'KI67', 'skin']
-    }
+    # Check if DATA_SOURCE is provided and valid
+    assert args.DATA_SOURCE in [
+        'LOCAL', 'NET'], "Invalid DATA_SOURCE. Must be 'LOCAL' or 'NET'."
+    DATA_SOURCE = args.DATA_SOURCE
 
-    # define EUI part
-    eui_url = 'https://storagetuzi.blob.core.windows.net/blobtuzi/eui/eui_VCCF.pyramid.ome.tif'
+    if DATA_SOURCE == 'LOCAL':
+        assert OUTPUT_LEVEL == 1, "OUTPUT_LEVEL must be 1 (LOCAL EXPORT) when DATA_SOURCE is LOCAL."
+
+    # Check if INFO_CSV is provided
+    assert args.INFO_CSV, "INFO_CSV file not provided."
+    INFO_CSV = args.INFO_CSV
+
+    # COLOR_SCHEME_CSV, EUI_URL, and EUI_PATH are optional, so no checks are needed for them
+    if args.COLOR_SCHEME_CSV:
+        COLOR_SCHEME_CSV = args.COLOR_SCHEME_CSV
+    if args.EUI_SOURCE:
+        EUI_SOURCE = args.EUI_SOURCE
+
+    if args.PROJECT_NAME:
+        FINAL_ZIP_NAME = args.PROJECT_NAME + '_vignette'
+    else:
+        FINAL_ZIP_NAME = 'vignette'
 
     # create a directory to store images if it doesn't exist
-    os.makedirs(img_path, exist_ok=True)
+    os.makedirs(IMG_ROOT, exist_ok=True)
+
+    # Read the INFO CSV file for image URLs, region names, and official region names
+    info_df = pd.read_csv(INFO_CSV)
+    REGION_NAMES = info_df['region'].tolist()
+    # detect if column 'pro_region' exists
+    if 'pro_region' in info_df.columns:
+        PRO_REGION_NAMES = info_df['pro_region'].tolist()
+    else:
+        PRO_REGION_NAMES = info_df['region'].tolist()
+    if DATA_SOURCE == 'LOCAL':
+        IMAGE_NAMES = info_df['image_name'].tolist()
+        IMAGE_URLS = []
+    else:
+        IMAGE_URLS = info_df['image_url'].tolist()
 
     # Download each image
-    print("Downloading images...")
-    img_full_paths = download_imgs(img_path, image_urls)
+    if DATA_SOURCE == 'LOCAL':
+        print("Using local images...")
+        img_full_paths = []
+        for IMAGE_NAME in IMAGE_NAMES:
+            img_full_paths.append(os.path.join(IMG_ROOT, IMAGE_NAME))
+    else:
+        print("Downloading images...")
+        img_full_paths = download_imgs(IMG_ROOT, IMAGE_URLS)
 
     # Print the list of full paths
     print("IMAGE PATHS: ")
@@ -246,54 +281,92 @@ if __name__ == '__main__':
         print('\t', path)
 
     # color scheme part files
-    print("Downloading color scheme file...")
-    csv_url = "https://storagetuzi.blob.core.windows.net/blobtuzi/vccf_data/cell_sets.csv"
-    csv_path = os.path.join(img_path, 'cell_sets.csv')
-    download_file(csv_url, csv_path)
-    print("CSV PATH: ", csv_path)
-
-    # eui part
-    print("Downloading EUI image...")
-    eui_original_file_name = os.path.basename(eui_url)
-    eui_full_path = os.path.join(img_path, eui_original_file_name)
-    download_file(eui_url, f"./images/{eui_original_file_name}")
-    print("EUI PATH: ", eui_full_path)
-
-    # Create a dataframe from the cell data and make necessary options
-    cell_sets_data = pd.DataFrame(cell_data)
-    options = {
-        "obsIndex": "cell_id",
-        "obsSets": [
-            {
+    if COLOR_SCHEME_CSV:
+        if DATA_SOURCE == 'LOCAL':
+            csv_path = COLOR_SCHEME_CSV
+            csv_url = None
+        else:
+            print("Downloading color scheme file...")
+            csv_url = COLOR_SCHEME_CSV
+            csv_path = os.path.join(
+                IMG_ROOT, os.path.basename(COLOR_SCHEME_CSV))
+            download_file(csv_url, csv_path)
+        print("CSV PATH: ", csv_path)
+        options = {
+            "obsIndex": "cell_id",
+            "obsSets": [
+                {
                     "name": "Cell Type",
                     "column": "cell_type"
-            }
-        ]
-    }
+                }
+            ]
+        }
 
-    for region_name in region_names:  # 1 to 12 inclusive
-        idx = region_names.index(region_name)
-        filepath = img_full_paths[idx]
-        img_url = image_urls[idx]
-        
-        if len(hubmap_names) == 0:
-            official_region_id = region_name
+    # eui part
+    if EUI_SOURCE:
+        if DATA_SOURCE == 'LOCAL':
+            eui_path = EUI_SOURCE
+            eui_url = None
         else:
-            official_region_id = hubmap_names[int(region_name)]
+            print("Downloading EUI image...")
+            eui_url = EUI_SOURCE
+            eui_path = os.path.join(IMG_ROOT, os.path.basename(EUI_SOURCE))
+            download_file(eui_url, eui_path)
+        print("EUI PATH: ", eui_path)
+
+    for idx in range(len(REGION_NAMES)):
+        region_name = REGION_NAMES[idx]
+        official_region_id = PRO_REGION_NAMES[idx]
+        img_path = img_full_paths[idx]
+        if len(IMAGE_URLS) > 0:
+            img_url = IMAGE_URLS[idx]
+        else:
+            img_url = None
 
         print("Region: ", region_name)
-        print("Filepath: ", filepath)
+        print("Filepath: ", img_path)
         print("Image URL: ", img_url)
         print("Official Region ID: ", official_region_id)
-        
-        vitessce_main(ROOT=OUTPUT, OUTPUT_LEVEL=OUTPUT_LEVEL, filepath=filepath, img_url=img_url,
-                      region_id=region_name,
-                      official_region_id=official_region_id,
-                      csv_url=csv_url, csv_path=csv_path, options=options)
 
-    # LOCAL=1, ONLINE=0
+        vitessce_main(output_folder=OUTPUT_ROOT, OUTPUT_LEVEL=OUTPUT_LEVEL,
+                      img_path=img_path,
+                      img_url=img_url,
+                      region_id=region_name, official_region_id=official_region_id,
+                      csv_url=csv_url if COLOR_SCHEME_CSV else None,
+                      csv_path=csv_path if COLOR_SCHEME_CSV else None,
+                      options=options if COLOR_SCHEME_CSV else None
+                      )
 
-    vitessce_eui(ROOT=OUTPUT, OUTPUT_LEVEL=OUTPUT_LEVEL, region_id='13',
-                 eui_img_full_path=eui_full_path, eui_url=eui_url)
+    if EUI_SOURCE:
+        vitessce_eui(output_folder=OUTPUT_ROOT, OUTPUT_LEVEL=OUTPUT_LEVEL, region_id=str(len(REGION_NAMES)+1),
+                     eui_img_full_path=eui_path,
+                     eui_url=eui_url)
 
-    shutil.make_archive('vignette_VCCF', 'zip', OUTPUT)
+    shutil.make_archive(FINAL_ZIP_NAME, 'zip', OUTPUT_ROOT)
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Process some parameters.')
+    parser.add_argument('--IMG_ROOT', type=str, required=True,
+                        help='Root path to images')
+    parser.add_argument('--OUTPUT_ROOT', type=str, required=True,
+                        help='Output root directory')
+    parser.add_argument('--OUTPUT_LEVEL', type=int,
+                        choices=[0, 1], required=True,
+                        help='Output level (0 for ONLINE PREVIEW, 1 for LOCAL EXPORT)')
+    parser.add_argument('--DATA_SOURCE', type=str,
+                        choices=['LOCAL', 'NET'], required=True,
+                        help='Data source (LOCAL or NET)')
+    parser.add_argument('--INFO_CSV', type=str, required=True,
+                        help='Path to hubmap CSV file')
+    parser.add_argument('--COLOR_SCHEME_CSV', type=str,
+                        help='Path to cell data CSV file (optional)', default=None)
+    parser.add_argument('--EUI_URL', type=str,
+                        help='URL to EUI data (optional)', default=None)
+    parser.add_argument('--EUI_PATH', type=str,
+                        help='PATH to EUI data (optional)', default=None)
+    parser.add_argument('--PROJECT_NAME', type=str,
+                        help='Project name for the final zip file (optional)', default=None)
+
+    args = parser.parse_args()
+    main(args)
