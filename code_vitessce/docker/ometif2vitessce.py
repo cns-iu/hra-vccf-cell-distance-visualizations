@@ -23,6 +23,39 @@ def download_file(url, destination):
     os.system(f"curl -L -o {destination} {url}")
 
 
+def download_imgs(folder, image_urls):
+    full_paths = []
+    for url in image_urls:
+        # Extract the original file name from the URL
+        original_file_name = os.path.basename(url)
+        img_full_path = os.path.join(folder, original_file_name)
+        full_paths.append(img_full_path)
+        download_file(url, img_full_path)
+    return full_paths
+
+
+def reformat_layout(json_data, spatial_width=10.0, max_width=12.0, silent=True):
+
+    # Update the "spatial" component
+    for component in json_data['layout']:
+        if component['component'] == 'spatial' and component['w'] < spatial_width:
+            if not silent:
+                print(
+                    f"\tUpdating 'spatial' component 'width' from {component['w']} to {spatial_width}")
+            component['w'] = spatial_width
+
+    # Update other components based on the new width of the "spatial" component
+    for component in json_data['layout']:
+        if component['component'] != 'spatial' and component['x'] == 6:
+            if not silent:
+                print(
+                    f"\tUpdating '{component['component']}' component 'x' from {component['x']} to {spatial_width}")
+                print(
+                    f"\tUpdating '{component['component']}' component 'width' from {component['w']} to 2")
+            component['x'] = spatial_width
+            component['w'] = max_width - spatial_width
+
+
 def vitessce_main(output_folder, OUTPUT_LEVEL, img_path, img_url, region_id, official_region_id, layer_count,
                   csv_url=None, csv_path=None, options=None):
     vc = VitessceConfig(schema_version="1.0.15",
@@ -111,6 +144,7 @@ def vitessce_main(output_folder, OUTPUT_LEVEL, img_path, img_url, region_id, off
     os.makedirs(PATH_TO_EXPORT_DIRECTORY, exist_ok=True)
     config_dict = vc.export(
         to="files", base_url=f"{BASE_URL_PLACEHOLDER}/vignette_{region_id}", out_dir=PATH_TO_EXPORT_DIRECTORY)
+    reformat_layout(config_dict)
     # Use `open` to create a new empty file at ./exported_data/vitessce.json
     with open(os.path.join(VIGNETTE_DIR, "vitessce.json"), "w") as f:
         json.dump(config_dict, f)
@@ -147,7 +181,9 @@ def vitessce_eui(output_folder, OUTPUT_LEVEL, region_id, eui_img_full_path, eui_
 # vc.layout(spatial | (lc / status))
     vc.layout(spatial)
     web_url = vc.web_app()
-    display(HTML(f'View on Vitessce.io'))
+    # print(f"View on Vitessce.io: {web_url}")
+    # url is too long so do NOT print it
+    print(f"URL is too long to print. View on Vignette json file")
 
     PATH_TO_EXPORT_DIRECTORY = os.path.join(
         output_folder, "data", f"vignette_13")
@@ -172,17 +208,6 @@ figures:
 """
     with open(os.path.join(VIGNETTE_DIR, "description.md"), "w") as f:
         f.write(vignette_md)
-
-
-def download_imgs(folder, image_urls):
-    full_paths = []
-    for url in image_urls:
-        # Extract the original file name from the URL
-        original_file_name = os.path.basename(url)
-        img_full_path = os.path.join(folder, original_file_name)
-        full_paths.append(img_full_path)
-        download_file(url, img_full_path)
-    return full_paths
 
 
 def main(args):
