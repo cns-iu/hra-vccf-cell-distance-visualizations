@@ -275,12 +275,20 @@ if __name__ == '__main__':
         idx = region_names.index(region_name)
         filepath = img_full_paths[idx]
         img_url = image_urls[idx]
+        
+        if len(hubmap_names) == 0:
+            official_region_id = region_name
+        else:
+            official_region_id = hubmap_names[int(region_name)]
 
-        print(region_names)
-        print(filepath)
+        print("Region: ", region_name)
+        print("Filepath: ", filepath)
+        print("Image URL: ", img_url)
+        print("Official Region ID: ", official_region_id)
+        
         vitessce_main(ROOT=OUTPUT, OUTPUT_LEVEL=OUTPUT_LEVEL, filepath=filepath, img_url=img_url,
                       region_id=region_name,
-                      official_region_id=hubmap_names[int(region_name)],
+                      official_region_id=official_region_id,
                       csv_url=csv_url, csv_path=csv_path, options=options)
 
     # LOCAL=1, ONLINE=0
