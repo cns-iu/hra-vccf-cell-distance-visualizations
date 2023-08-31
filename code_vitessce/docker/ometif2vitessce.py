@@ -279,7 +279,8 @@ if __name__ == '__main__':
         print(region_names)
         print(filepath)
         vitessce_main(ROOT=OUTPUT, OUTPUT_LEVEL=OUTPUT_LEVEL, filepath=filepath, img_url=img_url,
-                      region_id=region_name, official_region_id=hubmap_names[idx],
+                      region_id=region_name,
+                      official_region_id=hubmap_names[int(region_name)],
                       csv_url=csv_url, csv_path=csv_path, options=options)
 
     # LOCAL=1, ONLINE=0
