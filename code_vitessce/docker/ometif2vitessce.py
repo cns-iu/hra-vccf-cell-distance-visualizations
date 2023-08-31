@@ -257,7 +257,6 @@ def main(args):
 
     if DATA_SOURCE == 'LOCAL':
         assert OUTPUT_LEVEL == 1, "OUTPUT_LEVEL must be 1 (LOCAL EXPORT) when DATA_SOURCE is LOCAL."
-    print("OUTPUT_LEVEL: ", OUTPUT_LEVEL)
 
     # Check if INFO_CSV is provided
     assert args.INFO_CSV, "INFO_CSV file not provided."
