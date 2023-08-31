@@ -100,10 +100,9 @@ def vitessce_main(output_folder, OUTPUT_LEVEL, img_path, img_url, region_id, off
     vc.layout(spatial_plot | (layer_controller / cell_sets_view))
 
     web_url = vc.web_app()
-    display(HTML(f'View on Vitessce.io'))
-    # FULL CODE:
-    # display(HTML(f'View on Vitessce.io'))
-    # THIS LINE WILL BE MODIFIED WHEN SAVED TO GITHUB
+    # print(f"View on Vitessce.io: {web_url}")
+    # url is too long so do NOT print it
+    print(f"URL is too long to print. View on Vignette json file")
 
     PATH_TO_EXPORT_DIRECTORY = os.path.join(
         output_folder, "data", f"vignette_{region_id}")
@@ -216,22 +215,27 @@ def main(args):
     # Check if IMG_ROOT is provided
     assert args.IMG_ROOT, "IMG_ROOT directory not provided."
     IMG_ROOT = args.IMG_ROOT
+    print("IMG_ROOT: ", IMG_ROOT)
 
     # Check if OUTPUT_ROOT is provided
     assert args.OUTPUT_ROOT, "OUTPUT_ROOT directory not provided."
     OUTPUT_ROOT = args.OUTPUT_ROOT
+    print("OUTPUT_ROOT: ", OUTPUT_ROOT)
 
     # Check if OUTPUT_LEVEL is provided and valid
     assert args.OUTPUT_LEVEL in [0, 1], "Invalid OUTPUT_LEVEL. Must be 0 or 1."
     OUTPUT_LEVEL = args.OUTPUT_LEVEL
+    print("OUTPUT_LEVEL: ", OUTPUT_LEVEL)
 
     # Check if DATA_SOURCE is provided and valid
     assert args.DATA_SOURCE in [
         'LOCAL', 'NET'], "Invalid DATA_SOURCE. Must be 'LOCAL' or 'NET'."
     DATA_SOURCE = args.DATA_SOURCE
+    print("DATA_SOURCE: ", DATA_SOURCE)
 
     if DATA_SOURCE == 'LOCAL':
         assert OUTPUT_LEVEL == 1, "OUTPUT_LEVEL must be 1 (LOCAL EXPORT) when DATA_SOURCE is LOCAL."
+    print("OUTPUT_LEVEL: ", OUTPUT_LEVEL)
 
     # Check if INFO_CSV is provided
     assert args.INFO_CSV, "INFO_CSV file not provided."
@@ -240,18 +244,23 @@ def main(args):
     # COLOR_SCHEME_CSV, EUI_URL, and EUI_PATH are optional, so no checks are needed for them
     if args.COLOR_SCHEME_CSV:
         COLOR_SCHEME_CSV = args.COLOR_SCHEME_CSV
+        print("COLOR_SCHEME_CSV (optional): ", COLOR_SCHEME_CSV)
     if args.EUI_SOURCE:
         EUI_SOURCE = args.EUI_SOURCE
+        print("EUI_SOURCE (optional): ", EUI_SOURCE)
 
     if args.PROJECT_NAME:
         FINAL_ZIP_NAME = args.PROJECT_NAME + '_vignette'
+        print("PROJECT_NAME (optional): ", args.PROJECT_NAME)
     else:
         FINAL_ZIP_NAME = 'vignette'
 
     # create a directory to store images if it doesn't exist
+    print("Creating image directory...", IMG_ROOT)
     os.makedirs(IMG_ROOT, exist_ok=True)
 
     # Read the INFO CSV file for image URLs, region names, and official region names
+    print("Reading CSV file...")
     info_df = pd.read_csv(INFO_CSV)
     REGION_NAMES = info_df['region'].tolist()
     # detect if column 'pro_region' exists
@@ -264,6 +273,9 @@ def main(args):
         IMAGE_URLS = []
     else:
         IMAGE_URLS = info_df['image_url'].tolist()
+    # print columns read from the csv
+    print("Columns read from the CSV file: ")
+    print('\t', info_df.columns.tolist())
 
     # Download each image
     if DATA_SOURCE == 'LOCAL':
@@ -314,6 +326,8 @@ def main(args):
             download_file(eui_url, eui_path)
         print("EUI PATH: ", eui_path)
 
+    # Generate visualizations
+    print("Generating visualizations...")
     for idx in range(len(REGION_NAMES)):
         region_name = REGION_NAMES[idx]
         official_region_id = PRO_REGION_NAMES[idx]
@@ -323,10 +337,10 @@ def main(args):
         else:
             img_url = None
 
-        print("Region: ", region_name)
-        print("Filepath: ", img_path)
-        print("Image URL: ", img_url)
-        print("Official Region ID: ", official_region_id)
+        print(" - Region: ", region_name)
+        print(" - Filepath: ", img_path)
+        print(" - Image URL: ", img_url)
+        print(" - Official Region ID: ", official_region_id)
 
         vitessce_main(output_folder=OUTPUT_ROOT, OUTPUT_LEVEL=OUTPUT_LEVEL,
                       img_path=img_path,
@@ -337,11 +351,15 @@ def main(args):
                       options=options if COLOR_SCHEME_CSV else None
                       )
 
-    if EUI_SOURCE:
+    # EUI
+    if EUI_SOURCE:        
+        print("Generating EUI visualization...")
         vitessce_eui(output_folder=OUTPUT_ROOT, OUTPUT_LEVEL=OUTPUT_LEVEL, region_id=str(len(REGION_NAMES)+1),
                      eui_img_full_path=eui_path,
                      eui_url=eui_url)
 
+    # Zip the output folder
+    print("Zipping the output folder...")
     shutil.make_archive(FINAL_ZIP_NAME, 'zip', OUTPUT_ROOT)
 
 
