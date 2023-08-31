@@ -185,7 +185,7 @@ def download_imgs(folder, image_urls):
         img_full_path = os.path.join(folder, original_file_name)
         full_paths.append(img_full_path)
         download_file(url, img_full_path)
-        return full_paths
+    return full_paths
 
 
 if __name__ == '__main__':
