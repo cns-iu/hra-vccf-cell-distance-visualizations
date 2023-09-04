@@ -5,6 +5,7 @@ import os
 import json
 import shutil
 import pandas as pd
+import ast
 
 from vitessce import (
     VitessceConfig,
@@ -100,34 +101,41 @@ def vitessce_main(output_folder, OUTPUT_LEVEL, img_path, img_url, region_id, off
         "channels": channels_list
     }]
 
-    cell_sets_view = vc.add_view(cm.OBS_SETS, dataset=dataset)
-    obs_set_color = [
-        {"path": ["Cell Type", "vessel"], "color": [255, 0, 0]},
-        {"path": ["Cell Type", "T-Killer"], "color": [255, 0, 255]},
-        {"path": ["Cell Type", "T-Killer_link"], "color": [255, 0, 255]},
-        {"path": ["Cell Type", "T-Helper"], "color": [0, 0, 255]},
-        {"path": ["Cell Type", "T-Helper_link"], "color": [0, 0, 255]},
-        {"path": ["Cell Type", "T-Reg"], "color": [0, 255, 0]},
-        {"path": ["Cell Type", "T-Reg_link"], "color": [0, 255, 0]},
-        {"path": ["Cell Type", "CD68"], "color": [255, 215, 0]},
-        {"path": ["Cell Type", "CD68_link"], "color": [255, 215, 0]},
-        {"path": ["Cell Type", "DDB2"], "color": [0, 153, 76]},
-        {"path": ["Cell Type", "P53"], "color": [153, 76, 0]},
-        {"path": ["Cell Type", "KI67"], "color": [0, 255, 255]},
-        {"path": ["Cell Type", "skin"], "color": [192, 192, 192]},
-    ]
+    if csv_path:
+        cell_sets_view = vc.add_view(cm.OBS_SETS, dataset=dataset)
+        # read cvd using pd
+        cell_sets_data = pd.read_csv(csv_path)
+        # using cell_type and cell_color to generate obs_set_color
+        # Convert the cell_color from string format "[255,0,0]" to a list [255, 0, 0]
+        cell_sets_data['color_list'] = cell_sets_data['cell_color'].apply(
+            lambda x: ast.literal_eval(x))
+
+        # Generate the obs_set_color dictionary
+        obs_set_color = []
+        for index, row in cell_sets_data.iterrows():
+            obs_set_color.append({
+                "path": ["Cell Type", row['cell_type']],
+                "color": row['color_list']
+            })
+
     vc.link_views(
         [spatial_plot, layer_controller],
         [ct.SPATIAL_ZOOM, ct.SPATIAL_TARGET_X,
             ct.SPATIAL_TARGET_Y, ct.SPATIAL_SEGMENTATION_LAYER],
         [-4, 7500, 7500, spatial_segmentation_layer_value]
     )
-    vc.link_views(
-        [cell_sets_view, spatial_plot, layer_controller],
-        [ct.OBS_SET_COLOR],
-        [obs_set_color]
-    )
-    vc.layout(spatial_plot | (layer_controller / cell_sets_view))
+    
+    if csv_path:
+        vc.link_views(
+            [cell_sets_view, spatial_plot, layer_controller],
+            [ct.OBS_SET_COLOR],
+            [obs_set_color]
+        )
+        
+    if csv_path:
+        vc.layout(spatial_plot | (layer_controller / cell_sets_view))
+    else:
+        vc.layout(spatial_plot | layer_controller)
 
     web_url = vc.web_app()
     # print(f"View on Vitessce.io: {web_url}")
@@ -175,26 +183,27 @@ def vitessce_eui(output_folder, OUTPUT_LEVEL, region_id, eui_img_full_path, eui_
         )
     spatial = vc.add_view(vt.SPATIAL, dataset=dataset)
     status = vc.add_view(vt.STATUS, dataset=dataset)
-# Try changing the prop below to False
+    
+    # Try changing the prop below to False
     lc = vc.add_view(vt.LAYER_CONTROLLER, dataset=dataset).set_props(
         disableChannelsIfRgbDetected=False)
-# vc.layout(spatial | (lc / status))
     vc.layout(spatial)
+    
     web_url = vc.web_app()
     # print(f"View on Vitessce.io: {web_url}")
     # url is too long so do NOT print it
     print(f"URL is too long to print. View on Vignette json file")
 
     PATH_TO_EXPORT_DIRECTORY = os.path.join(
-        output_folder, "data", f"vignette_13")
-    VIGNETTE_DIR = os.path.join(output_folder, "vignettes", f"vignette_13")
-# Export Vitessce config to JSON
+        output_folder, "data", f"vignette_{region_id}")
+    VIGNETTE_DIR = os.path.join(output_folder, "vignettes", f"vignette_{region_id}")
+    # Export Vitessce config to JSON
     os.makedirs(VIGNETTE_DIR, exist_ok=True)
-# Export Vitessce config to JSON
+    # Export Vitessce config to JSON
     os.makedirs(PATH_TO_EXPORT_DIRECTORY, exist_ok=True)
     config_dict = vc.export(
-        to="files", base_url=f"{BASE_URL_PLACEHOLDER}/vignette_13", out_dir=PATH_TO_EXPORT_DIRECTORY)
-# Use `open` to create a new empty file at ./exported_data/vitessce.json
+        to="files", base_url=f"{BASE_URL_PLACEHOLDER}/vignette_{region_id}", out_dir=PATH_TO_EXPORT_DIRECTORY)
+    # Use `open` to create a new empty file at ./exported_data/vitessce.json
     with open(os.path.join(VIGNETTE_DIR, "vitessce.json"), "w") as f:
         json.dump(config_dict, f)
     vignette_md = f"""
