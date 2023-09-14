@@ -35,7 +35,7 @@ for label in unique_regions:
     split_target_file = f"{split_source_file.replace('doi_10.5061_dryad.pk0p2ngrf__v11/23_09_CODEX_HuBMAP_alldata_Dryad_merged.csv', 'Intestine_64_data/Region')}_{i}.csv"
 
     # Write to the file using pandas to_csv
-    df_label.to_csv(split_target_file, index=False, header=True, mode='a')
+    df_label.to_csv(split_target_file, index=False, header=True, mode='w')
     i = i +1
     # print the progress
     print(f"File {split_target_file} written successfully")
