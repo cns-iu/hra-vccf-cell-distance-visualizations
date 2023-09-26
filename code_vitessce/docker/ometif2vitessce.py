@@ -454,6 +454,10 @@ def main(args):
     # Zip the output folder
     print("Zipping the output folder...")
     shutil.make_archive(FINAL_ZIP_NAME, 'zip', OUTPUT_ROOT)
+    
+    # Delete the output folder
+    print("Deleting the output folder...")
+    shutil.rmtree(OUTPUT_ROOT)
 
 
 if __name__ == '__main__':
