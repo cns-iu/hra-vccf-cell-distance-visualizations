@@ -1,0 +1,17 @@
+# VCCF
+
+python ometif2vitessce.py --IMG_ROOT ./image --OUTPUT_ROOT ./output --OUTPUT_LEVEL 0 --DATA_SOURCE NET --INFO_CSV ./info.csv --COLOR_SCHEME_CSV "https://storagetuzi.blob.core.windows.net/blobtuzi/vccf_data/cell_sets.csv" --EUI_SOURCE "https://storagetuzi.blob.core.windows.net/blobtuzi/eui/eui_VCCF.pyramid.ome.tif"  --PROJECT_NAME VCCF
+
+python ometif2vitessce.py --IMG_ROOT ./image --OUTPUT_ROOT ./output --OUTPUT_LEVEL 1 --DATA_SOURCE NET --INFO_CSV ./info.csv --COLOR_SCHEME_CSV "https://storagetuzi.blob.core.windows.net/blobtuzi/vccf_data/cell_sets.csv" --EUI_SOURCE "https://storagetuzi.blob.core.windows.net/blobtuzi/eui/eui_VCCF.pyramid.ome.tif"  --PROJECT_NAME VCCF
+
+python ometif2vitessce.py --IMG_ROOT ./image --OUTPUT_ROOT ./output --OUTPUT_LEVEL 1 --DATA_SOURCE LOCAL --INFO_CSV ./info.csv --COLOR_SCHEME_CSV ./image/cell_sets.csv --EUI_SOURCE ./image/eui_VCCF.pyramid.ome.tif --PROJECT_NAME VCCF
+
+# GFTU
+
+python ometif2vitessce.py --IMG_ROOT ./image --OUTPUT_ROOT ./output --OUTPUT_LEVEL 0 --DATA_SOURCE NET --INFO_CSV ./info.csv --COLOR_SCHEME_CSV "https://storagetuzi.blob.core.windows.net/blobtuzi/gftu_data/cell_sets.csv" --EUI_SOURCE "https://storagetuzi.blob.core.windows.net/blobtuzi/eui/eui_gftu.pyramid.ome.tif" --BG_ROOT ./image --PROJECT_NAME GFTU
+
+python ometif2vitessce.py --IMG_ROOT ./image --OUTPUT_ROOT ./output --OUTPUT_LEVEL 1 --DATA_SOURCE NET --INFO_CSV ./info.csv --COLOR_SCHEME_CSV "https://storagetuzi.blob.core.windows.net/blobtuzi/gftu_data/cell_sets.csv" --EUI_SOURCE "https://storagetuzi.blob.core.windows.net/blobtuzi/eui/eui_gftu.pyramid.ome.tif" --BG_ROOT ./image --PROJECT_NAME GFTU
+
+python ometif2vitessce.py --IMG_ROOT ./image --OUTPUT_ROOT ./output --OUTPUT_LEVEL 1 --DATA_SOURCE NET --INFO_CSV ./info.csv --COLOR_SCHEME_CSV ./image/cell_sets.csv --EUI_SOURCE ./image/eui_GFTU.pyramid.ome.tif --BG_ROOT ./image --PROJECT_NAME GFTU
+
+
