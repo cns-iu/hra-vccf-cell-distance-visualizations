@@ -259,7 +259,8 @@ def main(args):
             - COLOR_SCHEME_CSV (str, optional): URL OR PATH to the CSV file containing cell data, depending on the DATA_SOURCE.
                                                 If not provided, a default scheme (random) will be used.
             - EUI_SOURCE (str, optional): URL OR PATH to the EUI data, depending on the DATA_SOURCE.
-            - PROJECT_NAME',(str, optional): Project name for the final zip file. If not provided, the default name is 'vignette'.
+            - PROJECT_NAME (str, optional): Project name for the final zip file. If not provided, the default name is 'vignette'.
+            - NO_DEL_OUTPUT (bool, optional, default=False): If True, the output directory will not be deleted.
 
     The function will process the images and generate visualizations based on the provided arguments.
     """
@@ -456,8 +457,9 @@ def main(args):
     shutil.make_archive(FINAL_ZIP_NAME, 'zip', OUTPUT_ROOT)
     
     # Delete the output folder
-    print("Deleting the output folder...")
-    shutil.rmtree(OUTPUT_ROOT)
+    if not args.NO_DEL_OUTPUT:
+        print("Deleting the output folder...")
+        shutil.rmtree(OUTPUT_ROOT)
 
 
 if __name__ == '__main__':
@@ -482,6 +484,8 @@ if __name__ == '__main__':
                         help='URL OR PATH to EUI data (optional)', default=None)
     parser.add_argument('--PROJECT_NAME', type=str,
                         help='Project name for the final zip file (optional)', default=None)
+    parser.add_argument('--NO_DEL_OUTPUT', type='store_true',
+                        help='Not delete output folder (optional)', default=False)
 
     args = parser.parse_args()
     main(args)
