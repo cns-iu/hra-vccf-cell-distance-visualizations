@@ -81,11 +81,6 @@ def vitessce_main(output_folder, OUTPUT_LEVEL, img_path, img_url, region_id, off
         # ONLINE PREVIEW
         if bg_url:
             dataset = vc.add_dataset(name='Cell segmentations').add_object(
-                OmeTiffWrapper(img_url=img_url, is_bitmask=True,
-                               name=f"Region {region_id} Visualization")
-            ).add_object(CsvWrapper(csv_url=csv_url, data_type=DataType.OBS_SETS.value, options=options))
-        else:
-            dataset = vc.add_dataset(name='Cell segmentations').add_object(
                 MultiImageWrapper(
                     image_wrappers=[
                         OmeTiffWrapper(img_url=img_url, is_bitmask=True,
@@ -93,6 +88,11 @@ def vitessce_main(output_folder, OUTPUT_LEVEL, img_path, img_url, region_id, off
                         OmeTiffWrapper(img_url=bg_url,
                                        name=f"Region {region_id} Background"),
                     ])).add_object(CsvWrapper(csv_url=csv_url, data_type=DataType.OBS_SETS.value, options=options))
+        else:
+            dataset = vc.add_dataset(name='Cell segmentations').add_object(
+                OmeTiffWrapper(img_url=img_url, is_bitmask=True,
+                               name=f"Region {region_id} Visualization")
+            ).add_object(CsvWrapper(csv_url=csv_url, data_type=DataType.OBS_SETS.value, options=options))
 
     spatial_plot = vc.add_view(cm.SPATIAL, dataset=dataset)
     layer_controller = vc.add_view(cm.LAYER_CONTROLLER, dataset=dataset)
