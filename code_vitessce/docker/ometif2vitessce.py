@@ -331,10 +331,13 @@ def main(args):
     if DATA_SOURCE == 'LOCAL':
         IMAGE_NAMES = info_df['image_name'].tolist()
         IMAGE_URLS = []
+        if BG_ROOT:
+            BG_NAMES = info_df['bg_name'].tolist()
+            BG_URLS = []
     else:
         IMAGE_URLS = info_df['image_url'].tolist()
         if BG_ROOT:
-            BG_IMAGE_URLS = info_df['bg_url'].tolist()
+            BG_URLS = info_df['bg_url'].tolist()
     # print columns read from the csv
     print("Columns read from the CSV file: ")
     print('\t', info_df.columns.tolist())
@@ -355,11 +358,11 @@ def main(args):
         if DATA_SOURCE == 'LOCAL':
             print("Using local background images...")
             bg_full_paths = []
-            for IMAGE_NAME in IMAGE_NAMES:
-                bg_full_paths.append(os.path.join(BG_ROOT, IMAGE_NAME))
+            for BG_NAME in BG_NAMES:
+                bg_full_paths.append(os.path.join(BG_ROOT, BG_NAME))
         else:
             print("Downloading background images...")
-            bg_full_paths = download_imgs(BG_ROOT, BG_IMAGE_URLS)
+            bg_full_paths = download_imgs(BG_ROOT, BG_URLS)
 
     # Print the list of full paths
     print("IMAGE PATHS: ")
@@ -416,8 +419,8 @@ def main(args):
             img_url = IMAGE_URLS[idx]
         else:
             img_url = None
-        if len(BG_IMAGE_URLS) > 0:
-            bg_url = BG_IMAGE_URLS[idx]
+        if len(BG_URLS) > 0:
+            bg_url = BG_URLS[idx]
         else:
             bg_url = None
 
