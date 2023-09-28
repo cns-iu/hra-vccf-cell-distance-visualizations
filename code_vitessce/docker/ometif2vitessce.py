@@ -297,6 +297,8 @@ def main(args):
     if args.BG_ROOT:
         BG_ROOT = args.BG_ROOT
         print("BG_ROOT (optional): ", BG_ROOT)
+    else:
+        BG_ROOT = None
 
     # COLOR_SCHEME_CSV, EUI_URL, and EUI_PATH are optional, so no checks are needed for them
     if args.COLOR_SCHEME_CSV:
