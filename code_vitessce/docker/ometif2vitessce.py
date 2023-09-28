@@ -337,10 +337,17 @@ def main(args):
         if BG_ROOT:
             BG_NAMES = info_df['bg_name'].tolist()
             BG_URLS = []
+        else:
+            BG_NAMES = []
+            BG_URLS = []
     else:
         IMAGE_URLS = info_df['image_url'].tolist()
         if BG_ROOT:
             BG_URLS = info_df['bg_url'].tolist()
+            BG_NAMES = []
+        else:
+            BG_URLS = []
+            BG_NAMES = []
     # print columns read from the csv
     print("Columns read from the CSV file: ")
     print('\t', info_df.columns.tolist())
