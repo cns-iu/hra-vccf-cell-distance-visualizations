@@ -484,7 +484,7 @@ if __name__ == '__main__':
                         help='URL OR PATH to EUI data (optional)', default=None)
     parser.add_argument('--PROJECT_NAME', type=str,
                         help='Project name for the final zip file (optional)', default=None)
-    parser.add_argument('--NO_DEL_OUTPUT', type='store_true',
+    parser.add_argument('--NO_DEL_OUTPUT', action='store_true',
                         help='Not delete output folder (optional)', default=False)
 
     args = parser.parse_args()
