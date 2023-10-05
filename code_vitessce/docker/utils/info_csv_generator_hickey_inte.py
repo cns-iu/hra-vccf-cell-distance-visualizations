@@ -7,7 +7,7 @@ region_names = ['reg001_CL_B004', 'reg001_SB_B004', 'reg002_CL_B004', 'reg002_SB
 rows = len(region_names)
 # Region_reg001_CL_B004_mask.pyramid.ome
 image_urls = [
-    rf'https://storagetuzi.blob.core.windows.net/blobtuzi/hickey_inte/Region_{region}_mask.pyramid.ome.tif' for region in region_names]
+    rf'https://storagetuzi.blob.core.windows.net/blobtuzi/hickey_inte_vccf/Region_{region}_mask.pyramid.ome.tif' for region in region_names]
 
 # Extract image names from the URLs using os.path.basename
 image_names = [os.path.basename(url) for url in image_urls]
