@@ -172,6 +172,7 @@ for label in unique_regions:
         'xv': new_x,
         'yv': new_y,
         'type': df_Region_1_immmune['Cell Type'],
+        'group': 'Immune',
     })
     df.to_csv(os.path.join(root_path, 'vitessce_raw', f"Region_{label}_nuclei.csv"), index=False)
 
