@@ -22,6 +22,7 @@ obs_set_color = [
     {"path": ["Cell Type", "Stroma"], "color": [251, 228, 38]},
     {"path": ["Cell Type", "TA"], "color": [246, 34, 46]},
     {"path": ["Cell Type", "Endothelial"], "color": [170, 13, 254]},
+    {"path": ["Cell Type", "Endothelial"], "color": [170, 13, 254]},
     {"path": ["Cell Type", "B_link"], "color": [28, 131, 86]},
     {"path": ["Cell Type", "CD4_link"], "color": [133, 102, 13]},
     {"path": ["Cell Type", "CD7_Immune_link"], "color": [50, 131, 254]},
@@ -43,7 +44,7 @@ obs_set_color = [
     {"path": ["Cell Type", "Stroma_link"], "color": [251, 228, 38]},
     {"path": ["Cell Type", "TA_link"], "color": [246, 34, 46]},
     {"path": ["Cell Type", "Endothelial_link"], "color": [170, 13, 254]},
-    {"path": ["Cell Type", "vessel"], "color": [170, 13, 254]}]
+    {"path": ["Cell Type", "Endothelial"], "color": [170, 13, 254]},]
 
 
 cell_data = {
