@@ -85,7 +85,7 @@ cell_types = ['Enterocyte', 'Goblet', 'Neuroendocrine', 'SmoothMuscle', 'Lymphat
               'CD7_Immune', 'Enterocyte_ITLN1p', 'Enterocyte_CD57p', 'B']
 sorted_cell_types = sorted(cell_types)
 
-is_link_color = True
+is_link_color = False
 if is_link_color:
     color_dict = {cell: idx+1 for idx, cell in enumerate(sorted_cell_types)}
     color_dict.update({cell+'_link': idx+1 for idx, cell in enumerate(sorted_cell_types)})
