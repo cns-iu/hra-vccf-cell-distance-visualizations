@@ -18,6 +18,25 @@
       sizes="114x114"
       href="./previews/img/apple-touch-icon-114x114.png"
     />
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"> </script>
+
+<script>
+
+    $(function() {
+
+
+   var people = [];
+
+   $.getJSON('./vitessce_configs/vitessce_configs.json', function(data) {
+       $.each(data.visualizations, function(i, f) {
+          var link = "<li>" + "<a href=" + f.config + " title=" + f.name + ">" + f.name + "</a>" + "</li>";
+          $(link).appendTo("#vitesscelist");
+     });
+
+   });
+
+});
+</script>
   </head>
   <body>
     <header class="main-header">
@@ -51,21 +70,6 @@
       <br/>
       <h1>VCCF Cell Distance Visualizations (Vitessce-based)</h1>
       <ul class="list-style-none" id="vitesscelist">
-      <script>
-            fetch("vitessce_configs.json")
-                .then(response => response.json())
-                .then(data => {
-                    for (var i = 0; i<data.vizualizations.length; i++){
-                        let configId = data.items[i].id;
-                        let name = data.items[i].name;
-                        let config = data.items[i].config;
-                            document.querySelector("#vitesscelist").innerHTML += `
-                                <li>
-                                    <a href=${config} title=${name}>${name}</a>
-                                </li>`;
-                    }
-                })
-        </script>
       </ul>
     </div>
     <footer class="main-footer">
