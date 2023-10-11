@@ -48,6 +48,25 @@
           >
         </li>
       </ul>
+      <br/>
+      <h1>VCCF Cell Distance Visualizations (Vitessce-based)</h1>
+      <ul class="list-style-none">
+      <script>
+            fetch("vitessce_configs.json")
+                .then(response => response.json())
+                .then(data => {
+                    for (var i = 0; i<data.vizualizations.length; i++){
+                        let configId = data.items[i].id;
+                        let name = data.items[i].name;
+                        let config = data.items[i].config;
+                            document.querySelector("#tb1").innerHTML += `
+                                <li>
+                                    <a href=${config} title=${name}>${name}</a>
+                                </li>`;
+                    }
+                })
+        </script>
+      </ul>
     </div>
     <footer class="main-footer">
       <p>
