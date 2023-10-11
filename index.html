@@ -50,7 +50,7 @@
       </ul>
       <br/>
       <h1>VCCF Cell Distance Visualizations (Vitessce-based)</h1>
-      <ul class="list-style-none">
+      <ul class="list-style-none" id="vitesscelist">
       <script>
             fetch("vitessce_configs.json")
                 .then(response => response.json())
@@ -59,7 +59,7 @@
                         let configId = data.items[i].id;
                         let name = data.items[i].name;
                         let config = data.items[i].config;
-                            document.querySelector("#tb1").innerHTML += `
+                            document.querySelector("#vitesscelist").innerHTML += `
                                 <li>
                                     <a href=${config} title=${name}>${name}</a>
                                 </li>`;
