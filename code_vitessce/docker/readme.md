@@ -6,7 +6,7 @@ This script provides a pipeline for processing and visualizing biomedical images
 
 ### Purpose and Pipeline
 
-The primary purpose of this script is to facilitate the visualization of biomedical images, especially in the context of the HuBMAP project. The pipeline involves:
+The primary purpose of this script is to generate the visualization of biomedical images, especially in the context of the HuBMAP project. The pipeline involves:
 
 1. **Data Acquisition**: Depending on the specified data source (`LOCAL` or `NET`), the script either accesses local files or downloads data from provided URLs.
 2. **Data Processing**: Images are processed using the Vitessce library, and additional functionalities like background image processing, color scheme application, and EUI visualization are available.
