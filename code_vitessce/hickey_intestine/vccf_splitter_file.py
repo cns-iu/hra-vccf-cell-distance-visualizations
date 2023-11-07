@@ -61,6 +61,11 @@ unique_regions = data_new["sample_name"].unique()
 cell_types = data_new["cell_type"].unique()
 print(cell_types)
 
+# call generate_obs_set_color in cell_data_view_generator.py
+import cell_data_view_generator as cdvg
+
+cdvg.generate_obs_set_color(cell_types, use_link=True, csv_path="cell_sets.csv")
+
 # Take the column 'unique_region' to split from the actual column names of data frame
 column_to_split = "sample_name"
 
@@ -192,9 +197,3 @@ for label in unique_regions:
         os.path.join(root_path, "vitessce_raw", f"Region_{label}_nuclei.csv"),
         index=False,
     )
-
-
-# call generate_obs_set_color in cell_data_view_generator.py
-import cell_data_view_generator as cdvg
-
-cdvg.generate_obs_set_color(cell_types, use_link=True, csv_path="cell_sets.csv")

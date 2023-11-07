@@ -36,37 +36,43 @@ color_list = [
 
 
 def generate_obs_set_color(cell_types, use_link, csv_path=None):
+    sorted_cell_types = sorted(cell_types)
     obs_set_color = []
-    for i, cell_type in enumerate(cell_types):
-        # Special case for "Endothelial"
-        if cell_type == "Endothelial":
-            # Red color for Endothelial
-            obs_set_color.append(
-                {"path": ["Cell Type", cell_type], "color": (255, 0, 0)}
-            )
-        else:
-            color = color_list[i % len(color_list)]
-            obs_set_color.append({"path": ["Cell Type", cell_type], "color": color})
-            if use_link:
-                obs_set_color.append(
-                    {"path": ["Cell Type", cell_type + "_link"], "color": color}
-                )
-    if csv_path:
-        save_to_csv(obs_set_color, filename=csv_path)
-        print(f"Saved to {csv_path}")
-    return obs_set_color
-
-
-def save_to_csv(obs_set_color, filename="cell_sets.csv"):
     cell_data = {"cell_id": [], "cell_type": [], "cell_color": []}
 
-    for idx, item in enumerate(obs_set_color, 1):
-        cell_data["cell_id"].append(idx)
-        cell_data["cell_type"].append(item["path"][1])
-        cell_data["cell_color"].append(item["color"])
+    # Assign colors and create entries for cells and links
+    for i, cell_type in enumerate(sorted_cell_types, start=1):  # Start from 1
+        color = color_list[i % len(color_list)]
+        # Special case for "Endothelial"
+        if cell_type == "Endothelial":
+            color = [255, 0, 0]  # Red color for Endothelial
 
-    cell_sets_data = pd.DataFrame(cell_data)
-    cell_sets_data.to_csv(filename, index=False)
+        # Add cell information
+        obs_set_color.append({"path": ["Cell Type", cell_type], "color": color})
+        cell_data["cell_id"].append(i)
+        cell_data["cell_type"].append(cell_type)
+        cell_data["cell_color"].append(str(color).replace('(', '[').replace(')', ']'))
+    
+    cell_data["cell_id"].append(1 + len(sorted_cell_types))
+    cell_data["cell_type"].append('Endothelial')
+    cell_data["cell_color"].append('[255, 0, 0]')
+
+        # Add link information if applicable
+    if use_link:
+        for i, cell_type in enumerate(sorted_cell_types, start=1):  # Start from 1
+            color = color_list[i % len(color_list)]
+            obs_set_color.append({"path": ["Cell Type", cell_type + "_link"], "color": color})
+            cell_data["cell_id"].append(i + 1 + len(sorted_cell_types))  # Same ID for the link
+            cell_data["cell_type"].append(cell_type + "_link")
+            cell_data["cell_color"].append(str(color).replace('(', '[').replace(')', ']'))
+
+    # Save to CSV if a path is provided
+    if csv_path:
+        cell_sets_data = pd.DataFrame(cell_data)
+        cell_sets_data.to_csv(csv_path, index=False)
+        print(f"Saved to {csv_path}")
+
+    return obs_set_color
 
 
 def main():
