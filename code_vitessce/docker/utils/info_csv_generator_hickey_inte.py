@@ -2,8 +2,7 @@ import os
 import pandas as pd
 
 # Given data
-region_names = ['reg001_CL_B004', 'reg001_SB_B004', 'reg002_CL_B004', 'reg002_SB_B004',
-                'reg003_CL_B004', 'reg003_SB_B004', 'reg004_CL_B004', 'reg004_SB_B004']
+region_names = ['BE', 'tonsil']
 rows = len(region_names)
 # Region_reg001_CL_B004_mask.pyramid.ome
 image_urls = [

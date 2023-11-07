@@ -1,63 +1,88 @@
 import pandas as pd
 
-obs_set_color = [
-    {"path": ["Cell Type", "B"], "color": [28, 131, 86]},
-    {"path": ["Cell Type", "CD4"], "color": [133, 102, 13]},
-    {"path": ["Cell Type", "CD7_Immune"], "color": [50, 131, 254]},
-    {"path": ["Cell Type", "CD8_T"], "color": [226, 226, 226]},
-    {"path": ["Cell Type", "DC"], "color": [247, 225, 160]},
-    {"path": ["Cell Type", "Enterocyte"], "color": [46, 217, 255]},
-    {"path": ["Cell Type", "Enterocyte_CD57p"], "color": [46, 217, 255]},
-    {"path": ["Cell Type", "Enterocyte_ITLN1p"], "color": [46, 217, 255]},
-    {"path": ["Cell Type", "Goblet"], "color": [254, 175, 22]},
-    {"path": ["Cell Type", "ICC"], "color": [177, 13, 161]},
-    {"path": ["Cell Type", "Lymphatic"], "color": [176, 0, 104]},
-    {"path": ["Cell Type", "Macrophage"], "color": [28, 190, 79]},
-    {"path": ["Cell Type", "Nerve"], "color": [192, 117, 166]},
-    {"path": ["Cell Type", "Neuroendocrine"], "color": [50, 90, 155]},
-    {"path": ["Cell Type", "Neutrophil"], "color": [86, 86, 86]},
-    {"path": ["Cell Type", "Paneth"], "color": [248, 161, 159]},
-    {"path": ["Cell Type", "Plasma"], "color": [120, 42, 182]},
-    {"path": ["Cell Type", "SmoothMuscle"], "color": [252, 28, 191]},
-    {"path": ["Cell Type", "Stroma"], "color": [251, 228, 38]},
-    {"path": ["Cell Type", "TA"], "color": [246, 34, 46]},
-    {"path": ["Cell Type", "Endothelial"], "color": [170, 13, 254]},
-    {"path": ["Cell Type", "Endothelial"], "color": [170, 13, 254]},
-    {"path": ["Cell Type", "B_link"], "color": [28, 131, 86]},
-    {"path": ["Cell Type", "CD4_link"], "color": [133, 102, 13]},
-    {"path": ["Cell Type", "CD7_Immune_link"], "color": [50, 131, 254]},
-    {"path": ["Cell Type", "CD8_T_link"], "color": [226, 226, 226]},
-    {"path": ["Cell Type", "DC_link"], "color": [247, 225, 160]},
-    {"path": ["Cell Type", "Enterocyte_link"], "color": [192, 192, 192]},
-    {"path": ["Cell Type", "Enterocyte_CD57p_link"], "color": [46, 217, 255]},
-    {"path": ["Cell Type", "Enterocyte_ITLN1p_link"], "color": [46, 217, 255]},
-    {"path": ["Cell Type", "Goblet_link"], "color": [254, 175, 22]},
-    {"path": ["Cell Type", "ICC_link"], "color": [177, 13, 161]},
-    {"path": ["Cell Type", "Lymphatic_link"], "color": [176, 0, 104]},
-    {"path": ["Cell Type", "Macrophage_link"], "color": [28, 190, 79]},
-    {"path": ["Cell Type", "Nerve_link"], "color": [192, 117, 166]},
-    {"path": ["Cell Type", "Neuroendocrine_link"], "color": [50, 90, 155]},
-    {"path": ["Cell Type", "Neutrophil_link"], "color": [86, 86, 86]},
-    {"path": ["Cell Type", "Paneth_link"], "color": [248, 161, 159]},
-    {"path": ["Cell Type", "Plasma_link"], "color": [120, 42, 182]},
-    {"path": ["Cell Type", "SmoothMuscle_link"], "color": [252, 28, 191]},
-    {"path": ["Cell Type", "Stroma_link"], "color": [251, 228, 38]},
-    {"path": ["Cell Type", "TA_link"], "color": [246, 34, 46]},
-    {"path": ["Cell Type", "Endothelial_link"], "color": [170, 13, 254]},
-    {"path": ["Cell Type", "Endothelial"], "color": [170, 13, 254]},]
+# Pre-defined list of 30 colors [RGB tuples]
+color_list = [
+    [31, 119, 180],  # Blue
+    [255, 127, 14],  # Orange
+    [44, 160, 44],  # Green
+    [214, 39, 40],  # Red
+    [148, 103, 189],  # Purple
+    [140, 86, 75],  # Brown
+    [227, 119, 194],  # Pink
+    [127, 127, 127],  # Gray
+    [188, 189, 34],  # Olive
+    [23, 190, 207],  # Cyan
+    [174, 199, 232],  # Light Blue
+    [255, 187, 120],  # Light Orange
+    [152, 223, 138],  # Light Green
+    [255, 152, 150],  # Light Red
+    [197, 176, 213],  # Light Purple
+    [196, 156, 148],  # Light Brown
+    [247, 182, 210],  # Light Pink
+    [199, 199, 199],  # Light Gray
+    [219, 219, 141],  # Light Olive
+    [158, 218, 229],  # Light Cyan
+    [255, 127, 14],  # Orange
+    [44, 160, 44],  # Green
+    [31, 119, 180],  # Blue
+    [214, 39, 40],  # Red
+    [148, 103, 189],  # Purple
+    [227, 119, 194],  # Pink
+    [140, 86, 75],  # Brown
+    [127, 127, 127],  # Gray
+    [188, 189, 34],  # Olive
+    [23, 190, 207],  # Cyan
+]
 
 
-cell_data = {
-    'cell_id': [],
-    'cell_type': [],
-    'cell_color': []
-}
+def generate_obs_set_color(cell_types, use_link, csv_path=None):
+    obs_set_color = []
+    for i, cell_type in enumerate(cell_types):
+        # Special case for "Endothelial"
+        if cell_type == "Endothelial":
+            # Red color for Endothelial
+            obs_set_color.append(
+                {"path": ["Cell Type", cell_type], "color": (255, 0, 0)}
+            )
+        else:
+            color = color_list[i % len(color_list)]
+            obs_set_color.append({"path": ["Cell Type", cell_type], "color": color})
+            if use_link:
+                obs_set_color.append(
+                    {"path": ["Cell Type", cell_type + "_link"], "color": color}
+                )
+    if csv_path:
+        save_to_csv(obs_set_color, filename=csv_path)
+        print(f"Saved to {csv_path}")
+    return obs_set_color
 
-for idx, item in enumerate(obs_set_color, 1):
-    cell_data['cell_id'].append(idx)
-    cell_data['cell_type'].append(item['path'][1])
-    cell_data['cell_color'].append(item['color'])
 
-cell_sets_data = pd.DataFrame(cell_data)
+def save_to_csv(obs_set_color, filename="cell_sets.csv"):
+    cell_data = {"cell_id": [], "cell_type": [], "cell_color": []}
 
-cell_sets_data.to_csv('cell_sets.csv', index=False)
+    for idx, item in enumerate(obs_set_color, 1):
+        cell_data["cell_id"].append(idx)
+        cell_data["cell_type"].append(item["path"][1])
+        cell_data["cell_color"].append(item["color"])
+
+    cell_sets_data = pd.DataFrame(cell_data)
+    cell_sets_data.to_csv(filename, index=False)
+
+
+def main():
+    cell_types = [
+        "B",
+        "CD4",
+        "CD8_T",
+        "DC",
+        "Goblet",
+        "Neutrophil",
+        "Endothelial",
+    ]  # Add more cell types as needed
+    use_link = True
+
+    obs_set_color = generate_obs_set_color(cell_types, use_link, "cell_sets.csv")
+
+
+if __name__ == "__main__":
+    main()

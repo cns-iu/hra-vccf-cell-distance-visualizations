@@ -1,11 +1,12 @@
 import pandas as pd
+import os
 
 """""
 Author: Himani Shah (shahhi@iu.edu)
 
 Input: CODEX_HuBMAP_alldata_Dryad.csv file path
 Output: 64 .csv files will be generated based on 'unique_region' coulumn in input file
-"""""
+""" ""
 
 """""
 Data description:
@@ -39,11 +40,13 @@ multiplexed imaging. The tonsil datatset was used as training to predict cell ty
 We also include a preconstructed graph for the tonsil and BE datasets so that running a demo example of STELLAR found on 
 our github (https://github.com/snap-stanford/stellar) runs faster and is included as supplementary data. 
 
-"""""
+""" ""
 
 # Give path to your data from source : https://datadryad.org/stash/landing/show?id=doi%3A10.5061%2Fdryad.g4f4qrfrc
 # (CODEX multiplexed imaging cell datasets used for using STELLAR to transfer cell type annotations to other tissues and donors)
-split_source_file = r'G:\HuBMAP\Hickey\B004_training_dryad.csv'
+root_path = r"G:\HuBMAP\Hickey"
+file_name = r"BE_Tonsil_l3_dryad.csv"
+split_source_file = os.path.join(root_path, file_name)
 
 data_new = pd.read_csv(split_source_file)
 
@@ -52,25 +55,25 @@ data_new = pd.read_csv(split_source_file)
 
 # Store types of unique regions before splitting
 # column is "unique_region"
-unique_regions = data_new['unique_region'].unique()
+unique_regions = data_new["sample_name"].unique()
 
 # Store types of cell before splitting
-cell_types = data_new['cell_type_A'].unique()
+cell_types = data_new["cell_type"].unique()
+print(cell_types)
 
 # Take the column 'unique_region' to split from the actual column names of data frame
-column_to_split = 'unique_region'
+column_to_split = "sample_name"
 
 for label in unique_regions:
-
     # Create another sub data frame using the value for the value of the column each time
     df_label = data_new[data_new[column_to_split] == label]
 
     # Define target File name and define path to target file
-    split_target_file = f"{split_source_file.replace('B004_training_dryad.csv', 'intestine_new_data/Region')}_{label}.csv"
+    split_target_file = f"{split_source_file.replace(file_name, 'intestine_new_data/Region')}_{label}.csv"
 
     # Write to the file using pandas to_csv
-    df_label.to_csv(split_target_file, index=False, header=True, mode='w')
-    
+    df_label.to_csv(split_target_file, index=False, header=True, mode="w")
+
     # print the progress
     print(f"File {split_target_file} written successfully")
 
@@ -78,32 +81,33 @@ for label in unique_regions:
 import math
 import os
 import warnings
-warnings.simplefilter('ignore')
+
+warnings.simplefilter("ignore")
 
 for label in unique_regions:
     # Get the path to respective Image
-    root_path = r'G:\HuBMAP\Hickey\intestine_new_data'
-    path = root_path + rf'/Region_{label}.csv'
+    root_path = r"G:\HuBMAP\Hickey\intestine_new_data"
+    path = root_path + rf"/Region_{label}.csv"
     df_Region_1 = pd.read_csv(path)
 
     # Get coordinates x, y, Cell subtype and cellType (2D Data)
-    df_Region_1 = df_Region_1[['x', 'y', 'cell_type_A']]
-    
+    df_Region_1 = df_Region_1[["x", "y", "cell_type"]]
+
     # rename column cell_type_A to Cell Type
-    df_Region_1.rename(columns={'cell_type_A': 'Cell Type'}, inplace=True)
-    
-    # Calculate μm per px 
+    df_Region_1.rename(columns={"cell_type": "Cell Type"}, inplace=True)
+
+    # Calculate μm per px
     # By dividing 4000/4536 = 0.881 and can also be 4000/4704 = 0.849, as Image size is 16mmx16mm and Image in pixel is 4704px x 4536px
-    micro_per_pixel = 0.866 # Taking avg if both possibilities 
-    scale =  micro_per_pixel # to convert given pixel in micro meter unit
-    df_Region_1['x'] =  scale * df_Region_1['x']
-    df_Region_1['y'] =  scale * df_Region_1['y']
+    micro_per_pixel = 0.866  # Taking avg if both possibilities
+    scale = micro_per_pixel  # to convert given pixel in micro meter unit
+    df_Region_1["x"] = scale * df_Region_1["x"]
+    df_Region_1["y"] = scale * df_Region_1["y"]
 
     # Create two data frames each for endothelial cells and all other cells
-    df_Region_1_vessel = df_Region_1.loc[df_Region_1['Cell Type'] == 'Endothelial']
-    df_Region_1_immmune = df_Region_1.loc[df_Region_1['Cell Type'] != 'Endothelial']
+    df_Region_1_vessel = df_Region_1.loc[df_Region_1["Cell Type"] == "Endothelial"]
+    df_Region_1_immmune = df_Region_1.loc[df_Region_1["Cell Type"] != "Endothelial"]
 
-    # Define list variables to store 
+    # Define list variables to store
     x_list = []
     y_list = []
     xv_list = []
@@ -113,27 +117,30 @@ for label in unique_regions:
     new_dist = []
 
     # Storing the scaled values
-    x_list = df_Region_1_immmune['x'].values.tolist()
-    y_list = df_Region_1_immmune['y'].values.tolist()
-    xv_list = df_Region_1_vessel['x'].values.tolist()
-    yv_list = df_Region_1_vessel['y'].values.tolist()
+    x_list = df_Region_1_immmune["x"].values.tolist()
+    y_list = df_Region_1_immmune["y"].values.tolist()
+    xv_list = df_Region_1_vessel["x"].values.tolist()
+    yv_list = df_Region_1_vessel["y"].values.tolist()
 
-    print(len(x_list))
-    print(len(y_list))
-    print(len(xv_list))
-    print(len(yv_list))
+    print(len(x_list), len(y_list))
+    print(len(xv_list), len(yv_list))
     temp_x = 0
     temp_y = 0
 
     # Calculating nearest endothelial cell
     for i in range(len(x_list)):
         # (Source) Weber GM, Ju Y, Börner K. Considerations for Using the Vasculature as a Coordinate System to Map All the Cells in the Human Body. Front Cardiovasc Med. 2020 Mar 13;7:29. doi: 10.3389/fcvm.2020.00029. PMID: 32232057; PMCID: PMC7082726.
-        min_dist = 1000 # The distance can be atmost 1mm so that cells can get oxygen 
+        min_dist = 1000  # The distance can be atmost 1mm so that cells can get oxygen
         has_near = False
         for j in range(len(xv_list)):
-            if abs(x_list[i] - xv_list[j]) < min_dist and abs(y_list[i] - yv_list[j]) < min_dist:
+            if (
+                abs(x_list[i] - xv_list[j]) < min_dist
+                and abs(y_list[i] - yv_list[j]) < min_dist
+            ):
                 # Euclidean distance calculation
-                dist = math.sqrt((x_list[i] - xv_list[j]) ** 2 + (y_list[i] - yv_list[j]) ** 2 )
+                dist = math.sqrt(
+                    (x_list[i] - xv_list[j]) ** 2 + (y_list[i] - yv_list[j]) ** 2
+                )
                 if dist < min_dist:
                     has_near = True
                     min_dist = dist
@@ -141,7 +148,7 @@ for label in unique_regions:
                     temp_y = yv_list[j]
         new_x.append(temp_x)
         new_y.append(temp_y)
-        # If no endothelial cells within 1000μm distance then assign -1 
+        # If no endothelial cells within 1000μm distance then assign -1
         if has_near == False:
             new_dist.append(-1)
         else:
@@ -155,24 +162,39 @@ for label in unique_regions:
     y_margin = (y_max - y_min) * margin_index
 
     # Add values to new columns keeping track of nearest endothelial cell coordinates
-    df_Region_1_immmune['XV'] = new_x
-    df_Region_1_immmune['YV'] = new_y
-    df_Region_1_immmune['MinDistance'] = new_dist
+    df_Region_1_immmune["XV"] = new_x
+    df_Region_1_immmune["YV"] = new_y
+    df_Region_1_immmune["MinDistance"] = new_dist
 
     # Save the data frame to csv file for vitessce
-    df = pd.DataFrame({
-        'x': xv_list,
-        'y': yv_list,
-    })
-    df.to_csv(os.path.join(root_path, 'vitessce_raw', f"Region_{label}_vessels.csv"), index=False)
+    df = pd.DataFrame(
+        {
+            "x": xv_list,
+            "y": yv_list,
+        }
+    )
+    df.to_csv(
+        os.path.join(root_path, "vitessce_raw", f"Region_{label}_vessels.csv"),
+        index=False,
+    )
 
-    df = pd.DataFrame({
-        'x': x_list,
-        'y': y_list,
-        'xv': new_x,
-        'yv': new_y,
-        'type': df_Region_1_immmune['Cell Type'],
-        'group': 'Immune',
-    })
-    df.to_csv(os.path.join(root_path, 'vitessce_raw', f"Region_{label}_nuclei.csv"), index=False)
+    df = pd.DataFrame(
+        {
+            "x": x_list,
+            "y": y_list,
+            "xv": new_x,
+            "yv": new_y,
+            "type": df_Region_1_immmune["Cell Type"],
+            "group": "Immune",
+        }
+    )
+    df.to_csv(
+        os.path.join(root_path, "vitessce_raw", f"Region_{label}_nuclei.csv"),
+        index=False,
+    )
 
+
+# call generate_obs_set_color in cell_data_view_generator.py
+import cell_data_view_generator as cdvg
+
+cdvg.generate_obs_set_color(cell_types, use_link=True, csv_path="cell_sets.csv")

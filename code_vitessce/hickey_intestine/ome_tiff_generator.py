@@ -13,8 +13,12 @@ def generate_cell_mask(mask, value, vertices, is_line=False):
     if is_line:
         # Loop over pairs of vertices
         for i in range(len(vertices) - 1):
-            rr, cc = line(int(vertices[i][1]), int(vertices[i][0]),
-                          int(vertices[i + 1][1]), int(vertices[i + 1][0]))
+            rr, cc = line(
+                int(vertices[i][1]),
+                int(vertices[i][0]),
+                int(vertices[i + 1][1]),
+                int(vertices[i + 1][0]),
+            )
             mask[rr, cc] = value
     else:
         rr, cc = polygon([v[1] for v in vertices], [v[0] for v in vertices])
@@ -27,11 +31,14 @@ def convert_str_to_list(row):
 
 def generate_mask_arr(type_list, table, mask_shape, is_line=False):
     # initialize an empty mask for each cell type
-    masks = {cell_type: np.zeros(mask_shape, dtype=np.uint8)
-             for cell_type in type_list}
-    for index, row in tqdm(table.iterrows(), total=len(table), desc='Processing rows'):
+    masks = {cell_type: np.zeros(mask_shape, dtype=np.uint8) for cell_type in type_list}
+    for index, row in tqdm(table.iterrows(), total=len(table), desc="Processing rows"):
         generate_cell_mask(
-            masks[row['type']], color_dict[row['type']], row['vertices'], is_line=is_line)
+            masks[row["type"]],
+            color_dict[row["type"]],
+            row["vertices"],
+            is_line=is_line,
+        )
 
     # Create an ordered list of masks
     mask_list = [masks[cell_type] for cell_type in type_list]
@@ -49,12 +56,14 @@ def generate_mask_arr(type_list, table, mask_shape, is_line=False):
 
 
 def vertices_str2list(table, zoom_scale):
-    table['vertices'] = table['vertices'].apply(convert_str_to_list)
-    table['vertices'] = table['vertices'].apply(
-        lambda x: [[int(i[0] * zoom_scale), int(i[1] * zoom_scale)] for i in x])
+    table["vertices"] = table["vertices"].apply(convert_str_to_list)
+    table["vertices"] = table["vertices"].apply(
+        lambda x: [[int(i[0] * zoom_scale), int(i[1] * zoom_scale)] for i in x]
+    )
+
 
 # Default region_index
-region_index = 'reg001_CL_B004'
+region_index = "Barretts Esophagus"
 
 scale = 1
 
@@ -67,9 +76,9 @@ if len(sys.argv) >= 3:
     scale = float(sys.argv[2])
 
 # Construct the path to the nuclei file
-nuclei_root_path = r'G:\HuBMAP\Hickey\intestine_new_data\vitessce_raw'
-nuclei_file_name = f'Region_{region_index}_nuclei_table.csv'
-link_file_name = f'Region_{region_index}_link_table.csv'
+nuclei_root_path = r"G:\HuBMAP\Hickey\intestine_new_data\vitessce_raw"
+nuclei_file_name = f"Region_{region_index}_nuclei_table.csv"
+link_file_name = f"Region_{region_index}_link_table.csv"
 nuclei_file_path = os.path.join(nuclei_root_path, nuclei_file_name)
 link_file_path = os.path.join(nuclei_root_path, link_file_name)
 
@@ -80,45 +89,68 @@ link_table = pd.read_csv(link_file_path)
 vertices_str2list(cell_table, scale)
 vertices_str2list(link_table, scale)
 
-cell_types = ['Enterocyte', 'Goblet', 'Neuroendocrine', 'SmoothMuscle', 'Lymphatic', 'CD8T', 'Macrophage', 'DC', 
-              'Neutrophil', 'Endothelial', 'TA', 'Plasma', 'CD4T', 'Stroma', 'Nerve', 'ICC', 'Paneth', 
-              'CD7_Immune', 'Enterocyte_ITLN1p', 'Enterocyte_CD57p', 'B']
+cell_types = [
+    "Innate",
+    "PDPN",
+    "Endothelial",
+    "B",
+    "T",
+    "Squamous_epithelial",
+    "Stroma",
+    "SmoothMuscle",
+    "Plasma",
+    "Nerve",
+    "Glandular_epi",
+    "Secretory_epithelial",
+    "Paneth",
+]
 sorted_cell_types = sorted(cell_types)
 
 is_link_color = False
 if is_link_color:
-    color_dict = {cell: idx+1 for idx, cell in enumerate(sorted_cell_types)}
-    color_dict.update({cell+'_link': idx+1 for idx, cell in enumerate(sorted_cell_types)})
+    color_dict = {cell: idx + 1 for idx, cell in enumerate(sorted_cell_types)}
+    color_dict.update(
+        {cell + "_link": idx + 1 for idx, cell in enumerate(sorted_cell_types)}
+    )
 else:
-    color_dict = {cell: idx+1 for idx, cell in enumerate(sorted_cell_types)}
-    color_dict.update({cell+'_link': len(sorted_cell_types) + idx+2 for idx, cell in enumerate(sorted_cell_types)})
-color_dict['vessel'] = len(sorted_cell_types) + 1
+    color_dict = {cell: idx + 1 for idx, cell in enumerate(sorted_cell_types)}
+    color_dict.update(
+        {
+            cell + "_link": len(sorted_cell_types) + idx + 2
+            for idx, cell in enumerate(sorted_cell_types)
+        }
+    )
+color_dict["vessel"] = len(sorted_cell_types) + 1
 
 print(color_dict)
 
 # determine the shape of your canvas
-height = (cell_table['y'].max() + 30) * scale
-width = (cell_table['x'].max() + 30) * scale
+height = (cell_table["y"].max() + 30) * scale
+width = (cell_table["x"].max() + 30) * scale
 shape = (height, width)
 shape = tuple(map(int, shape))
 print(shape)
 
 print("Generating cell masks...")
-groups = sorted(cell_table['group'].unique().tolist())
+groups = sorted(cell_table["group"].unique().tolist())
 cell_mask_stack_list = []
 for group in groups:
     print(f"\tGenerating {group} masks...")
     cell_types = sorted(
-        cell_table[cell_table["group"] == group]["type"].unique().tolist())
+        cell_table[cell_table["group"] == group]["type"].unique().tolist()
+    )
     filtered_cell_table = cell_table[cell_table["type"].isin(cell_types)]
     cell_mask_stack = generate_mask_arr(
-        cell_types, filtered_cell_table, shape, is_line=True if group != "Immune" else False)
+        cell_types,
+        filtered_cell_table,
+        shape,
+        is_line=True if group != "Immune" else False,
+    )
     cell_mask = np.amax(cell_mask_stack, axis=2)[:, :, np.newaxis]
     cell_mask_stack_list.append(cell_mask)
 print("Generating link masks...")
-link_types = sorted(link_table['type'].unique().tolist())
-link_mask_stack = generate_mask_arr(
-    link_types, link_table, shape, is_line=True)
+link_types = sorted(link_table["type"].unique().tolist())
+link_mask_stack = generate_mask_arr(link_types, link_table, shape, is_line=True)
 link_mask = np.amax(link_mask_stack, axis=2)[:, :, np.newaxis]
 cell_mask_stack_list.append(link_mask)
 
@@ -137,9 +169,10 @@ bitmask_arr = np.transpose(mask_stack, (2, 0, 1))
 # Save the masks
 print("Saving masks...")
 
-tif_name = f'Region_{region_index}_mask.ome.tif'
-multiplex_img_to_ome_tiff(bitmask_arr, final_types, os.path.join(
-    nuclei_root_path, tif_name), axes="CYX")
+tif_name = f"Region_{region_index}_mask.ome.tif"
+multiplex_img_to_ome_tiff(
+    bitmask_arr, final_types, os.path.join(nuclei_root_path, tif_name), axes="CYX"
+)
 
 # PS code
 # $params = @('reg001_CL_B004', 'reg001_SB_B004', 'reg002_CL_B004', 'reg002_SB_B004', 'reg003_CL_B004', 'reg003_SB_B004', 'reg004_CL_B004', 'reg004_SB_B004')
@@ -156,4 +189,3 @@ multiplex_img_to_ome_tiff(bitmask_arr, final_types, os.path.join(
 # do
 #   ./bftools/bfconvert -tilex 512 -tiley 512 -pyramid-resolutions 6 -pyramid-scale 2 -compression LZW /mnt/g/HuBMAP/Hickey/intestine_new_data/vitessce_raw/Region_${param}_mask.ome.tif /mnt/g/HuBMAP/Hickey/intestine_new_data/vitessce_raw/hickey_vccf_data/Region_${param}_mask.pyramid.ome.tif
 # done
-
