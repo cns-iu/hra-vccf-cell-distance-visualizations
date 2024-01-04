@@ -37,3 +37,16 @@ python ometif2vitessce.py --IMG_ROOT ./image --OUTPUT_ROOT ./output --OUTPUT_LEV
 python ometif2vitessce.py --IMG_ROOT ./image --OUTPUT_ROOT ./output --OUTPUT_LEVEL 1 --DATA_SOURCE NET --INFO_CSV ./info.csv --COLOR_SCHEME_CSV "https://storagetuzi.blob.core.windows.net/blobtuzi/hickey_inte_vccf/cell_sets.csv" --EUI_SOURCE "https://storagetuzi.blob.core.windows.net/blobtuzi/eui/eui_hickey.pyramid.ome.tif" --PROJECT_NAME HICKEY_INTE_VCCF
 
 python ometif2vitessce.py --IMG_ROOT ./image --OUTPUT_ROOT ./output --OUTPUT_LEVEL 1 --DATA_SOURCE LOCAL --INFO_CSV ./info.csv --COLOR_SCHEME_CSV ./image/cell_sets.csv --EUI_SOURCE ./image/eui_hickey.pyramid.ome.tif --PROJECT_NAME HICKEY_INTE_VCCF
+
+# spleen
+
+python ometif2vitessce.py --IMG_ROOT ./image --OUTPUT_ROOT ./output --OUTPUT_LEVEL 0 --DATA_SOURCE NET --INFO_CSV ./info.csv --COLOR_SCHEME_CSV "https://storagetuzi.blob.core.windows.net/blobtuzi/spleen/cell_sets.csv" --PROJECT_NAME SPLEEN
+
+# xenium
+
+python ometif2vitessce.py --IMG_ROOT ./image --OUTPUT_ROOT ./output --OUTPUT_LEVEL 0 --DATA_SOURCE NET --INFO_CSV ./info.csv --COLOR_SCHEME_CSV "https://storagetuzi.blob.core.windows.net/blobtuzi/xenium_vccf_data/cell_sets.csv" --PROJECT_NAME XENIUM
+
+# gloria
+
+python ometif2vitessce.py --IMG_ROOT ./image --OUTPUT_ROOT ./output --OUTPUT_LEVEL 0 --DATA_SOURCE NET --INFO_CSV ./info.csv --COLOR_SCHEME_CSV "https://storagetuzi.blob.core.windows.net/blobtuzi/gloria/cell_sets.csv" --PROJECT_NAME GLORIA
+
