@@ -307,6 +307,8 @@ def main(args):
     if args.EUI_SOURCE:
         EUI_SOURCE = args.EUI_SOURCE
         print("EUI_SOURCE (optional): ", EUI_SOURCE)
+    else:
+        EUI_SOURCE = None
 
     # PROJECT_NAME is optional
     FINAL_ZIP_NAME = 'vignette'
