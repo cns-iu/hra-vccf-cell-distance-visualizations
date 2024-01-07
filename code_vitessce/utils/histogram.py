@@ -43,7 +43,8 @@ data_filtered = data[data['distance'] <= percentile_99]
 
 # Assuming data['distance'] is your data series
 bin_width = 5
-bin_range = np.arange(start=data_filtered['distance'].min(), 
+bin_range = np.arange(# start=data_filtered['distance'].min(), 
+                      start=0,
                       stop=data_filtered['distance'].max() + bin_width, step=bin_width)
 
 # Create the base figure and the first axis for the histogram
@@ -53,7 +54,7 @@ ax = data_filtered['distance'].plot.hist(bins=bin_range, density=False, edgecolo
 plt.xlabel('Distance')
 plt.ylabel('Frequency of Cells')
 # plt.title('VCCF Histogram of Cell Distances [All / Top 5]')
-plt.grid(True)
+plt.grid(False)
 
 # Save default x-axis limits for final formatting because the pandas kde
 # plot uses much wider limits which usually decreases readability
