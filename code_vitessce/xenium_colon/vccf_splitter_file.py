@@ -135,7 +135,7 @@ for label in unique_regions:
     # Calculating nearest endothelial cell
     for i in range(len(x_list)):
         # (Source) Weber GM, Ju Y, Börner K. Considerations for Using the Vasculature as a Coordinate System to Map All the Cells in the Human Body. Front Cardiovasc Med. 2020 Mar 13;7:29. doi: 10.3389/fcvm.2020.00029. PMID: 32232057; PMCID: PMC7082726.
-        min_dist = 1000  # The distance can be atmost 1mm so that cells can get oxygen
+        min_dist = 200  # The distance can be atmost 1mm so that cells can get oxygen
         has_near = False
         for j in range(len(xv_list)):
             if (
@@ -156,6 +156,8 @@ for label in unique_regions:
         # If no endothelial cells within 1000μm distance then assign -1
         if has_near == False:
             new_dist.append(-1)
+            new_x[-1] = x_list[i]
+            new_y[-1] = y_list[i]
         else:
             new_dist.append(min_dist)
 
