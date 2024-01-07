@@ -34,6 +34,9 @@ data['distance'] = np.sqrt((data['x'] - data['xv'])**2 + (data['y'] - data['yv']
 # distance * um_factor
 data['distance'] = data['distance'] * um_factor
 
+# remove those lines who distance is 0
+data = data[data['distance'] != 0]
+
 # Remove the top 1% of the data to exclude outliers
 percentile_99 = np.percentile(data['distance'], 99.5)
 data_filtered = data[data['distance'] <= percentile_99]
