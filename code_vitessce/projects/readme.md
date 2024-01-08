@@ -1,0 +1,1 @@
+Due to the simple structure and function of these scripts, they are created for each individual project instead of creating one general file working for all possible project but with complex parameters. This will keep the ease of use and efficiency of the project.
