@@ -102,8 +102,8 @@ for label in unique_regions:
 
     # rename column cell_type_A to Cell Type
     df_Region_1.rename(columns={"Cell Type": "Cell Type"}, inplace=True)
-    df_Region_1.rename(columns={"X": "x"}, inplace=True)
-    df_Region_1.rename(columns={"Y": "y"}, inplace=True)    
+    df_Region_1.rename(columns={"Xr": "x"}, inplace=True)
+    df_Region_1.rename(columns={"Yr": "y"}, inplace=True)    
     df_Region_1.rename(columns={"Category": "Category"}, inplace=True)
 
     # Calculate μm per px
