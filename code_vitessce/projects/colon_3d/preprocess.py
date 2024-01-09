@@ -2,19 +2,19 @@ import pandas as pd
 import os
 
 # root path
-root_path = r"G:\HuBMAP\colon_3d"
+root_path = r"D:\HuBMAP\colon_3d"
 
 # List of filenames
 filenames = [
-    "Celltype_CRC01002.csv", "Celltype_CRC01007.csv", "Celltype_CRC01014.csv", 
-    "Celltype_CRC01020.csv", "Celltype_CRC01025.csv", "Celltype_CRC01029.csv", 
-    "Celltype_CRC01034.csv", "Celltype_CRC01039.csv", "Celltype_CRC01044.csv", 
-    "Celltype_CRC01049.csv", "Celltype_CRC01050.csv", "Celltype_CRC01051.csv", 
-    "Celltype_CRC01052.csv", "Celltype_CRC01054.csv", "Celltype_CRC01059.csv", 
-    "Celltype_CRC01064.csv", "Celltype_CRC01069.csv", "Celltype_CRC01074.csv", 
-    "Celltype_CRC01078.csv", "Celltype_CRC01084.csv", "Celltype_CRC01086.csv", 
-    "Celltype_CRC01091.csv", "Celltype_CRC01097.csv", "Celltype_CRC01102.csv", 
-    "Celltype_CRC01106.csv"
+    "Reg_Celltype_CRC01002.csv", "Reg_Celltype_CRC01007.csv", "Reg_Celltype_CRC01014.csv", 
+    "Reg_Celltype_CRC01020.csv", "Reg_Celltype_CRC01025.csv", "Reg_Celltype_CRC01029.csv", 
+    "Reg_Celltype_CRC01034.csv", "Reg_Celltype_CRC01039.csv", "Reg_Celltype_CRC01044.csv", 
+    "Reg_Celltype_CRC01049.csv", "Reg_Celltype_CRC01050.csv", "Reg_Celltype_CRC01051.csv", 
+    "Reg_Celltype_CRC01052.csv", "Reg_Celltype_CRC01054.csv", "Reg_Celltype_CRC01059.csv", 
+    "Reg_Celltype_CRC01064.csv", "Reg_Celltype_CRC01069.csv", "Reg_Celltype_CRC01074.csv", 
+    "Reg_Celltype_CRC01078.csv", "Reg_Celltype_CRC01084.csv", "Reg_Celltype_CRC01086.csv", 
+    "Reg_Celltype_CRC01091.csv", "Reg_Celltype_CRC01097.csv", "Reg_Celltype_CRC01102.csv", 
+    "Reg_Celltype_CRC01106.csv"
 ]
 
 # Read CSV files, add filename column, and combine
@@ -22,7 +22,7 @@ df_list = []
 for filename in filenames:
     df = pd.read_csv(os.path.join(root_path, filename))
     # Extract CRCXXXXX part from the filename
-    crc_code = filename.split('.')[0].split('_')[1]
+    crc_code = filename.split('.')[0].split('_')[2]
     df['Layer'] = crc_code
     df_list.append(df)
 
