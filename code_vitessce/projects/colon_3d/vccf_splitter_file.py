@@ -108,7 +108,7 @@ for label in unique_regions:
 
     # Calculate μm per px
     # By dividing 4000/4536 = 0.881 and can also be 4000/4704 = 0.849, as Image size is 16mmx16mm and Image in pixel is 4704px x 4536px
-    micro_per_pixel = 0.866  # Taking avg if both possibilities
+    micro_per_pixel = 1  # Taking avg if both possibilities
     scale = micro_per_pixel  # to convert given pixel in micro meter unit
     df_Region_1["x"] = scale * df_Region_1["x"]
     df_Region_1["y"] = scale * df_Region_1["y"]
