@@ -98,7 +98,7 @@ for label in unique_regions:
     df_Region_1 = pd.read_csv(path)
 
     # Get coordinates x, y, Cell subtype and cellType (2D Data)
-    df_Region_1 = df_Region_1[["X", "Y", "Cell Type"]]
+    df_Region_1 = df_Region_1[["X", "Y", "Cell Type", "Category"]]
 
     # rename column cell_type_A to Cell Type
     df_Region_1.rename(columns={"Cell Type": "Cell Type"}, inplace=True)
