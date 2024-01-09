@@ -3,7 +3,7 @@ import pandas as pd
 
 # Given data
 image_urls = [
-    rf'https://storagetuzi.blob.core.windows.net/blobtuzi/gloria/Region_D265_mask.pyramid.ome.tif']
+    rf'https://storagetuzi.blob.core.windows.net/blobtuzi/colon_3d/Region_CRC01050_mask.pyramid.ome.tif']
 
 region_names = [f"CRC01050"]
 rows = len(region_names)
