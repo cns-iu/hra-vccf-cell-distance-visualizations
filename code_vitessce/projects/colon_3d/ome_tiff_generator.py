@@ -76,7 +76,7 @@ if len(sys.argv) >= 3:
     scale = float(sys.argv[2])
 
 # Construct the path to the nuclei file
-nuclei_root_path = r"G:\HuBMAP\gloria\new_data\vitessce_raw"
+nuclei_root_path = r"G:\HuBMAP\colon_3d\new_data\vitessce_raw"
 nuclei_file_name = f"Region_{region_index}_nuclei_table.csv"
 link_file_name = f"Region_{region_index}_link_table.csv"
 nuclei_file_path = os.path.join(nuclei_root_path, nuclei_file_name)
@@ -89,13 +89,12 @@ link_table = pd.read_csv(link_file_path)
 vertices_str2list(cell_table, scale)
 vertices_str2list(link_table, scale)
 
-cell_types = ['Macrophage', 'Smooth Muscle Cell', 'Immune Cell', 'Endothelial Cell',
- 'Type 2 Alveolar Epithelial Cell', 'Type 1 Alveolar Epithelial Cell',
- 'Mast Cell', 'Neutrophil', 'Antigen Presenting Cell',
- 'Megakaryocyte and Platelet', 'CD14+ Classical Monocyte', 'Macrophages',
- 'Proliferating Cell', 'Epithelial', 'T Regulatory Cell', 'CD8+ T Cell',
- 'CD4+ T Cell', 'Lymphatic Endothelial Cell (and some immune cells)',
- 'B Cell', 'Basal Epithelial Cell', 'T Cell ', 'CD1c+ Dendritic Cell']
+cell_types = ['Other', 'PDL1+ Macrophage', 'Tumor/Epi.', 'Lymphocyte(III)', 
+              'Treg', 'Endothelial', 'Muscle/Fibroblast', 'Tc cell', 
+              'PDL1+ Tumor/Epi.', 'Macrophage(IV)', 'B cells', 'PD1+ Tc', 
+              'Macrophage(III)', 'DN Lymphocyte', 'DP Lymphocyte', 'T helper', 
+              'Macrophage(II)', 'Macrophage(I)', 'Ki67+ Tumor/Epi.', 
+              'PD1+ T helper', 'PDL1+ lymphocyte']
 sorted_cell_types = sorted(cell_types)
 
 is_link_color = False

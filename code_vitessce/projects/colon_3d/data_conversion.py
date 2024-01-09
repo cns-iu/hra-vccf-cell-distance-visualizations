@@ -62,7 +62,7 @@ def main():
         scale = float(sys.argv[2])
 
     # Construct the path to the nuclei file
-    nuclei_root_path = r"G:\HuBMAP\Hickey\Intestine_64_data\vitessce_raw"
+    nuclei_root_path = r"G:\HuBMAP\colon_3d\new_data\vitessce_raw"
     nuclei_file_name = f"Region_{region_index}_nuclei.csv"
     vessel_file_name = f"Region_{region_index}_vessels.csv"
     nuclei_file_path = os.path.join(nuclei_root_path, nuclei_file_name)
