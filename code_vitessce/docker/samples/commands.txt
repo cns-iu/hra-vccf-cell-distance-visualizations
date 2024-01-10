@@ -52,7 +52,4 @@ python ometif2vitessce.py --IMG_ROOT ./image --OUTPUT_ROOT ./output --OUTPUT_LEV
 
 # colon_3d
 
-python ometif2vitessce.py --IMG_ROOT ./image --OUTPUT_ROOT ./output --OUTPUT_LEVEL 0 --DATA_SOURCE NET --INFO_CSV ./info.csv --COLOR_SCHEME_CSV "# gloria
-
-python ometif2vitessce.py --IMG_ROOT ./image --OUTPUT_ROOT ./output --OUTPUT_LEVEL 0 --DATA_SOURCE NET --INFO_CSV ./info.csv --COLOR_SCHEME_CSV "https://storagetuzi.blob.core.windows.net/blobtuzi/gloria/cell_sets.csv" --PROJECT_NAME GLORIA
-" --PROJECT_NAME COLON_3D
+python ometif2vitessce.py --IMG_ROOT ./image --OUTPUT_ROOT ./output --OUTPUT_LEVEL 0 --DATA_SOURCE NET --INFO_CSV ./info.csv --COLOR_SCHEME_CSV "https://storagetuzi.blob.core.windows.net/blobtuzi/colon_3d/cell_sets.csv" --PROJECT_NAME COLON_3D
