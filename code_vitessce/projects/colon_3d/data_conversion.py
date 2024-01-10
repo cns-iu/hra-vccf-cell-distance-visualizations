@@ -49,14 +49,14 @@ def generate_link_vertices(x, y, vx, vy):
 
 def main():
     # Default region_index
-    region_index = 3
+    region_index = 'CRC01050'
     scale = 1
     universal_size = 8
 
     # Check if at least one command-line argument is given
     if len(sys.argv) >= 2:
         # Use the given argument as region_index
-        region_index = int(sys.argv[1])
+        region_index = sys.argv[1]
     if len(sys.argv) >= 3:
         # Use the given argument as scale
         scale = float(sys.argv[2])
@@ -126,7 +126,9 @@ if __name__ == "__main__":
 
 
 # PS code
-# for ($i=1; $i -le 64; $i++) {
-#     Write-Host "Running python .\data_conversion.py $i"
-#     python .\data_conversion.py $i
+# $params = @('CRC01002','CRC01007','CRC01014','CRC01020','CRC01025','CRC01029','CRC01034','CRC01039','CRC01044','CRC01049','CRC01050','CRC01051','CRC01052','CRC01054','CRC01059','CRC01064','CRC01069','CRC01074','CRC01078','CRC01084','CRC01086','CRC01091','CRC01097','CRC01102','CRC01106')
+
+# foreach ($param in $params) {
+#     Write-Host "Running python .\data_conversion.py $param"
+#     python .\data_conversion.py $param
 # }
