@@ -10,7 +10,7 @@ rows = len(region_names)
 
 # Extract image names from the URLs using os.path.basename
 image_names = [os.path.basename(url) for url in image_urls]
-layer_count = 4
+layer_count = 5
 
 # Create a DataFrame
 df = pd.DataFrame({
