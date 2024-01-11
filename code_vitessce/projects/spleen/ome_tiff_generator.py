@@ -175,7 +175,7 @@ multiplex_img_to_ome_tiff(
 )
 
 # PS code
-# $params = @('reg001_CL_B004', 'reg001_SB_B004', 'reg002_CL_B004', 'reg002_SB_B004', 'reg003_CL_B004', 'reg003_SB_B004', 'reg004_CL_B004', 'reg004_SB_B004')
+# $params = @('FSLD', 'KSFB', 'NGPL', 'PBVN', 'PKHL', 'XXCD')
 
 # foreach ($param in $params) {
 #     Write-Host "Running python .\ome_tiff_generator.py $param"
@@ -183,10 +183,9 @@ multiplex_img_to_ome_tiff(
 # }
 
 # Linux pyramid commands
-# params=("reg001_CL_B004" "reg001_SB_B004" "reg002_CL_B004" "reg002_SB_B004" "reg003_CL_B004" "reg003_SB_B004" "reg004_CL_B004" "reg004_SB_B004")
+# params=('FSLD', 'KSFB', 'NGPL', 'PBVN', 'PKHL', 'XXCD')
 
 # for param in "${params[@]}"
 # do
-#   ./bftools/bfconvert -tilex 512 -tiley 512 -pyramid-resolutions 6 -pyramid-scale 2 -compression LZW /mnt/g/HuBMAP/Hickey/intestine_new_data/vitessce_raw/Region_${param}_mask.ome.tif /mnt/g/HuBMAP/Hickey/intestine_new_data/vitessce_raw/hickey_vccf_data/Region_${param}_mask.pyramid.ome.tif
+#   ./bftools/bfconvert -tilex 512 -tiley 512 -pyramid-resolutions 6 -pyramid-scale 2 -compression LZW /mnt/g/HuBMAP/spleen/new_data/vitessce_raw/Region_${param}_mask.ome.tif /mnt/g/HuBMAP/spleen/new_data/vitessce_raw/spleen/Region_${param}_mask.pyramid.ome.tif
 # done
-# ./bftools/bfconvert -tilex 512 -tiley 512 -pyramid-resolutions 6 -pyramid-scale 2 -compression LZW /mnt/g/HuBMAP/spleen/new_data/vitessce_raw/Region_FSLD_mask.ome.tif /mnt/g/HuBMAP/spleen/new_data/vitessce_raw/Region_FSLD_mask.pyramid.ome.tif
