@@ -2,6 +2,7 @@ import sys
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 from collections import Counter
 from scipy.stats import gaussian_kde
 
@@ -47,14 +48,19 @@ bin_range = np.arange(# start=data_filtered['distance'].min(),
                       start=0,
                       stop=data_filtered['distance'].max() + bin_width, step=bin_width)
 
+legend_handle = []
+
 # Create the base figure and the first axis for the histogram
 plt.figure(figsize=(10, 6))
 # ax = plt.hist(data_filtered['distance'], bins=bin_range, alpha=0.4, label='All Cells')
-ax = data_filtered['distance'].plot.hist(bins=bin_range, density=False, edgecolor='w', linewidth=0.5, alpha=0.3, label='All Cells')
-plt.xlabel('Distance')
-plt.ylabel('Frequency of Cells')
+ax = data_filtered['distance'].plot.hist(bins=bin_range, density=False, color='grey',
+                                         edgecolor='w', linewidth=0.5, alpha=0.4, label='All Cells')
+legend_handle.append(ax.patches[0])
+# legend_handle.append(mpatches.Patch(color = ax.patches[0].get_facecolor(), edgecolor='w', label='All Cells'))
+plt.xlabel(u'Distance (\u03bcm)')
+plt.ylabel('Number of Cells')
 # plt.title('VCCF Histogram of Cell Distances [All / Top 5]')
-plt.grid(False)
+# plt.grid(False)
 
 # Save default x-axis limits for final formatting because the pandas kde
 # plot uses much wider limits which usually decreases readability
@@ -77,21 +83,28 @@ elif len(top_types_count) > 40:
 
 top_types = [type_[0] for type_ in top_types_count]
 
+# Use 'tab10/Dark2/Set3' colormap
+base_colors = plt.cm.tab10(np.linspace(0, 1, 10)) 
+additional_colors1 = plt.cm.Dark2(np.linspace(0, 1, 8)) # Example to add more colors
+additional_colors2 = plt.cm.Set3(np.linspace(0, 1, 12)) # Example to add more colors
+all_colors = np.vstack([base_colors, additional_colors1, additional_colors2])  # Combine the color arrays
+
+
 # Draw the density curves on the second y-axis and find the maximum density value
-for cell_type in top_types:
+for i in range(len(top_types)):
+    cell_type = top_types[i]
+    line_color = all_colors[i]
     subset = data_filtered[data_filtered['type'] == cell_type]
     # Plot pandas KDE
     # subset['distance'].plot.density(alpha=0.5, ax=ax) # same as df['var'].plot.kde()
-    subset['distance'].hist(bins=bin_range, density=False, linewidth=1.5, alpha=0.6, ax=ax, label=cell_type, histtype='step')
+    sub_ax = subset['distance'].hist(color=line_color ,bins=bin_range, density=False, linewidth=1.5, alpha=0.75, ax=ax, label=cell_type, histtype='step')
+    legend_handle.append(mpatches.Patch(facecolor=line_color, edgecolor='none',label=cell_type))
 
 ax.set_xlim(xlim)
 
 # based on top_5_types counts, the length of the legend_col should be calculated to make sure each column has no more than 10 items
 legend_col = len(top_types) // 15 + 1
-if legend_col == 1:
-    plt.legend()
-else:
-    plt.legend(ncol=legend_col)
+plt.legend(handles=legend_handle, ncol=legend_col)
 
 plt.margins(0,0)
 plt.show()

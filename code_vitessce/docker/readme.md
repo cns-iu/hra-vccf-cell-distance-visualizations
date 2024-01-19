@@ -65,7 +65,7 @@ cell_id,cell_type,cell_color
 
 ### Command Line Examples:
 
-Replace `CSV_URL` or `CSV_FILE` with the appropriate path or URL.
+Replace `CSV_URL` or `CSV_FILE` with the appropriate path or URL. More samples can be found at samples/commands.txt.
 
 #### VCCF (Source: Network, Output: 0):
 

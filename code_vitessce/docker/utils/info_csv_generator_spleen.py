@@ -2,10 +2,10 @@ import os
 import pandas as pd
 
 # Given data
+region_names = ['FSLD', 'KSFB', 'NGPL', 'PBVN', 'PKHL', 'XXCD']
 image_urls = [
-    rf'https://storagetuzi.blob.core.windows.net/blobtuzi/spleen/Region_FSLD_mask.pyramid.ome.tif']
+    rf'https://storagetuzi.blob.core.windows.net/blobtuzi/spleen/Region_{region}_mask.pyramid.ome.tif' for region in region_names]
 
-region_names = [f"FSLD"]
 rows = len(region_names)
 
 # Extract image names from the URLs using os.path.basename
