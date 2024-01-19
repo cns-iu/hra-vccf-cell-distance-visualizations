@@ -5,8 +5,28 @@ import numpy as np
 import ast
 from tqdm import tqdm
 from skimage.draw import polygon, line
-from vitessce.data_utils import multiplex_img_to_ome_tiff
+from tifffile import TiffWriter
 from skimage.morphology import disk, dilation
+
+def multiplex_img_to_ome_tiff(img_arr, channel_names, output_path, axes="CYX"):
+    """
+    Convert a multiplexed image to OME-TIFF.
+
+    :param img_arr: The image as a 3D, 4D, or 5D array.
+    :type img_arr: np.array
+    :param list[str] channel_names: A list of channel names to include in the omero.channels[].label NGFF metadata field.
+    :param str output_path: The path to save the Zarr store.
+    :param str axes: The array axis ordering. By default, "CYX"
+    """
+    tiff_writer = TiffWriter(output_path, ome=True)
+    tiff_writer.write(
+        img_arr,
+        metadata={
+            'axes': axes,
+            'Channel': {'Name': channel_names},
+        }
+    )
+    tiff_writer.close()
 
 
 def generate_cell_mask(mask, value, vertices, is_line=False):
@@ -89,12 +109,12 @@ link_table = pd.read_csv(link_file_path)
 vertices_str2list(cell_table, scale)
 vertices_str2list(link_table, scale)
 
-cell_types = [['FDC', 'ILC', 'Monocytes', 'DC_pDC', 'Endothelial', 'T_CD8+_cytotoxic',
+cell_types = ['FDC', 'ILC', 'Monocytes', 'DC_pDC', 'Endothelial', 'T_CD8+_cytotoxic',
  'Macrophages_M2', 'B_mem', 'T_CD4+_TfH_GC', 'T_TfR', 'T_CD4+_naive',
  'B_plasma', 'VSMC', 'NK', 'T_Treg', 'B_Cycling', 'B_naive', 'B_GC_DZ',
  'Macrophages_M1', 'B_GC_LZ', 'T_CD4+', 'B_preGC', 'B_activated', 'B_IFN',
  'DC_cDC2', 'T_CD4+_TfH', 'T_CD8+_naive', 'DC_CCR7+', 'T_CD8+_CD161+',
- 'DC_cDC1', 'B_GC_prePB', 'T_TIM3+', 'NKT', 'Mast']] # CUSTOM 2
+ 'DC_cDC1', 'B_GC_prePB', 'T_TIM3+', 'NKT', 'Mast'] # CUSTOM 2
 sorted_cell_types = sorted(cell_types)
 
 is_link_color = False
@@ -180,4 +200,4 @@ multiplex_img_to_ome_tiff(
 #   C:\Users\yiju\Desktop\bftools\bfconvert.bat -tilex 512 -tiley 512 -pyramid-resolutions 6 -pyramid-scale 2 -compression LZW D:\HubMap\LN\new_data\vitessce_raw\Region_${param}_mask.ome.tif D:\HubMap\LN\new_data\vitessce_raw\ln_data\Region_${param}_mask.pyramid.ome.tif
 # done
 
-# C:\Users\yiju\Desktop\bftools\bfconvert.bat -tilex 512 -tiley 512 -pyramid-resolutions 6 -pyramid-scale 2 -compression LZW D:\HubMap\LN\new_data\vitessce_raw\Region_LN_00837_mask.ome.tif D:\HubMap\LN\new_data\vitessce_raw\ln_data\Region_LN00837_mask.pyramid.ome.tif
+# C:\Users\yiju\Desktop\bftools\bfconvert.bat -tilex 512 -tiley 512 -pyramid-resolutions 6 -pyramid-scale 2 -compression LZW D:\HubMap\LN\new_data\vitessce_raw\Region_LN00837_mask.ome.tif D:\HubMap\LN\new_data\vitessce_raw\ln_data\Region_LN00837_mask.pyramid.ome.tif
