@@ -5,8 +5,28 @@ import numpy as np
 import ast
 from tqdm import tqdm
 from skimage.draw import polygon, line
-from vitessce.data_utils import multiplex_img_to_ome_tiff
+from tifffile import TiffWriter
 from skimage.morphology import disk, dilation
+
+def multiplex_img_to_ome_tiff(img_arr, channel_names, output_path, axes="CYX"):
+    """
+    Convert a multiplexed image to OME-TIFF.
+
+    :param img_arr: The image as a 3D, 4D, or 5D array.
+    :type img_arr: np.array
+    :param list[str] channel_names: A list of channel names to include in the omero.channels[].label NGFF metadata field.
+    :param str output_path: The path to save the Zarr store.
+    :param str axes: The array axis ordering. By default, "CYX"
+    """
+    tiff_writer = TiffWriter(output_path, ome=True)
+    tiff_writer.write(
+        img_arr,
+        metadata={
+            'axes': axes,
+            'Channel': {'Name': channel_names},
+        }
+    )
+    tiff_writer.close()
 
 
 def generate_cell_mask(mask, value, vertices, is_line=False):
@@ -65,7 +85,7 @@ def vertices_str2list(table, zoom_scale):
 # Default region_index
 region_index = "D265"
 
-scale = 1
+scale = 0.8333
 
 # Check if at least one command-line argument is given
 if len(sys.argv) >= 2:
@@ -76,7 +96,7 @@ if len(sys.argv) >= 3:
     scale = float(sys.argv[2])
 
 # Construct the path to the nuclei file
-nuclei_root_path = r"G:\HuBMAP\colon_3d\new_data\vitessce_raw"
+nuclei_root_path = r"D:\HuBMAP\colon_3d\new_data\vitessce_raw"
 nuclei_file_name = f"Region_{region_index}_nuclei_table.csv"
 link_file_name = f"Region_{region_index}_link_table.csv"
 nuclei_file_path = os.path.join(nuclei_root_path, nuclei_file_name)
