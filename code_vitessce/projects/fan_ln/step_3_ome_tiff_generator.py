@@ -24,7 +24,8 @@ def multiplex_img_to_ome_tiff(img_arr, channel_names, output_path, axes="CYX"):
         metadata={
             'axes': axes,
             'Channel': {'Name': channel_names},
-        }
+        },
+        compression='zlib'
     )
     tiff_writer.close()
 
@@ -194,10 +195,11 @@ multiplex_img_to_ome_tiff(
 # }
 
 # Linux pyramid commands
-# params = ('LN00560' 'LN00837' 'LN22921' 'LN24336' 'LN27766')
-# for param in "${params[@]}"
-# do
-#   C:\Users\yiju\Desktop\bftools\bfconvert.bat -tilex 512 -tiley 512 -pyramid-resolutions 6 -pyramid-scale 2 -compression LZW D:\HubMap\LN\new_data\vitessce_raw\Region_${param}_mask.ome.tif D:\HubMap\LN\new_data\vitessce_raw\ln_data\Region_${param}_mask.pyramid.ome.tif
-# done
+# $params = @('LN00560', 'LN00837', 'LN22921', 'LN24336', 'LN27766')
+
+# foreach ($param in $params) {
+#     Write-Host "Running Pyramiding $param"
+#     C:\Users\yiju\Desktop\bftools\bfconvert.bat -tilex 512 -tiley 512 -pyramid-resolutions 6 -pyramid-scale 2 -compression LZW D:\HubMap\LN\new_data\vitessce_raw\Region_${param}_mask.ome.tif D:\HubMap\LN\new_data\vitessce_raw\ln_data\Region_${param}_mask.pyramid.ome.tif
+# }
 
 # C:\Users\yiju\Desktop\bftools\bfconvert.bat -tilex 512 -tiley 512 -pyramid-resolutions 6 -pyramid-scale 2 -compression LZW D:\HubMap\LN\new_data\vitessce_raw\Region_LN00837_mask.ome.tif D:\HubMap\LN\new_data\vitessce_raw\ln_data\Region_LN00837_mask.pyramid.ome.tif
