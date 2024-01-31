@@ -36,12 +36,45 @@ for label in unique_regions:
     print(f"File {split_target_file} written successfully")
 
 
+import math
 import os
 import warnings
 from tqdm import tqdm
 import numpy as np
 
 warnings.simplefilter("ignore")
+
+def calculate_nearest_endothelial_cell(x_list, y_list, xv_list, yv_list):
+    # Calculating nearest endothelial cell
+    for i in tqdm(range(len(x_list)), desc="Processing"):
+        # (Source) Weber GM, Ju Y, Börner K. Considerations for Using the Vasculature as a Coordinate System to Map All the Cells in the Human Body. Front Cardiovasc Med. 2020 Mar 13;7:29. doi: 10.3389/fcvm.2020.00029. PMID: 32232057; PMCID: PMC7082726.
+        min_dist = 250  # The distance can be atmost 1mm so that cells can get oxygen
+        has_near = False
+        for j in range(len(xv_list)):
+            if (
+                abs(x_list[i] - xv_list[j]) < min_dist
+                and abs(y_list[i] - yv_list[j]) < min_dist
+            ):
+                # Euclidean distance calculation
+                dist = math.sqrt(
+                    (x_list[i] - xv_list[j]) ** 2 + (y_list[i] - yv_list[j]) ** 2
+                )
+                if dist < min_dist:
+                    has_near = True
+                    min_dist = dist
+                    temp_x = xv_list[j]
+                    temp_y = yv_list[j]
+        new_x.append(temp_x)
+        new_y.append(temp_y)
+        # If no endothelial cells within 1000μm distance then assign -1
+        if has_near == False:
+            new_dist.append(-1)
+            new_x[-1] = x_list[i]
+            new_y[-1] = y_list[i]
+        else:
+            new_dist.append(min_dist)
+    
+    return new_x, new_y, new_dist
 
 root_path = os.path.join(root_path, "new_data")
 
@@ -84,57 +117,19 @@ for label in unique_regions:
     temp_x = 0
     temp_y = 0    
     
-    # new calculation
-    # Convert your lists to NumPy arrays
-    x_list_np = np.array(x_list)
-    y_list_np = np.array(y_list)
-    xv_list_np = np.array(xv_list)
-    yv_list_np = np.array(yv_list)
-
-    # Preallocate arrays for results
-    new_x = np.empty_like(x_list_np)
-    new_y = np.empty_like(y_list_np)
-    new_dist = np.empty_like(x_list_np, dtype=float)
-
-    # Calculating nearest endothelial cell
-    for i in tqdm(range(len(x_list_np)), desc="Processing"):
-        min_dist = 250  # The distance can be at most 1mm so that cells can get oxygen
-        has_near = False
-        
-        # Compute squared differences
-        dx = x_list_np[i] - xv_list_np
-        dy = y_list_np[i] - yv_list_np
-        dist_squared = dx**2 + dy**2
-        
-        # Find the index of the closest cell
-        valid_indices = np.where(dist_squared < min_dist**2)[0]
-        if valid_indices.size > 0:
-            closest_index = valid_indices[dist_squared[valid_indices].argmin()]
-            has_near = True
-            min_dist = np.sqrt(dist_squared[closest_index])
-            new_x[i] = xv_list_np[closest_index]
-            new_y[i] = yv_list_np[closest_index]
-        else:
-            new_x[i] = x_list_np[i]
-            new_y[i] = y_list_np[i]
-            new_dist[i] = -1
-
-        if has_near:
-            new_dist[i] = min_dist
-        else:
-            new_dist[i] = -1
-
+    new_x, new_y, new_dist = calculate_nearest_endothelial_cell(x_list, y_list, xv_list, yv_list)
+    
+    # Add values to new columns keeping track of nearest endothelial cell coordinates
+    df_Region_1_immmune["XV"] = new_x
+    df_Region_1_immmune["YV"] = new_y
+    df_Region_1_immmune["MinDistance"] = new_dist
+    
     x_min, x_max = min(x_list), max(x_list)
     y_min, y_max = min(y_list), max(y_list)
 
     margin_index = 0.05
     x_margin = (x_max - x_min) * margin_index
     y_margin = (y_max - y_min) * margin_index
-
-    # Add values to new columns keeping track of nearest endothelial cell coordinates
-    df_Region_1_immmune["XV"] = new_x
-    df_Region_1_immmune["YV"] = new_y
-    df_Region_1_immmune["MinDistance"] = new_dist
 
     # Save the data frame to csv file for vitessce
     df = pd.DataFrame(
