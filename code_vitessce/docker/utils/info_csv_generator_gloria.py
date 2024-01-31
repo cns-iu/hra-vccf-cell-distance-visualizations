@@ -2,7 +2,7 @@ import os
 import pandas as pd
 
 # Given data
-region_names = [f"D26512, D11540"]
+region_names = ["D26512", "D11540"]
 image_urls = [
     rf'https://storagetuzi.blob.core.windows.net/blobtuzi/gloria_data/Region_{region}_mask.pyramid.ome.tif' for region in region_names]
 
