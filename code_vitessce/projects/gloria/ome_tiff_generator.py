@@ -89,13 +89,14 @@ link_table = pd.read_csv(link_file_path)
 vertices_str2list(cell_table, scale)
 vertices_str2list(link_table, scale)
 
-cell_types = ['Macrophage', 'Smooth Muscle Cell', 'Immune Cell', 'Endothelial Cell',
- 'Type 2 Alveolar Epithelial Cell', 'Type 1 Alveolar Epithelial Cell',
- 'Mast Cell', 'Neutrophil', 'Antigen Presenting Cell',
- 'Megakaryocyte and Platelet', 'CD14+ Classical Monocyte', 'Macrophages',
- 'Proliferating Cell', 'Epithelial', 'T Regulatory Cell', 'CD8+ T Cell',
- 'CD4+ T Cell', 'Lymphatic Endothelial Cell (and some immune cells)',
- 'B Cell', 'Basal Epithelial Cell', 'T Cell ', 'CD1c+ Dendritic Cell']
+cell_types = ['Extracellular Matrix', 'Macrophage', 'CD4+ T Cell', 'Smooth Muscle Cell',
+'CD8+ T Cell', 'Type 2 Alveolar Epithelial Cell', 'Endothelial', 'B Cell',
+'Immune Cell', 'Type 1 Alveolar Epithelial Cell', 'Mast Cell', 'Neutrophil',
+'Antigen Presenting Cell', 'Megakaryocyte and Platelet',
+'CD14+ Classical Monocyte', 'Macrophages', 'Proliferating Cell',
+'Epithelial', 'T Regulatory Cell',
+'Lymphatic Endothelial Cell (and some immune cells)',
+'Basal Epithelial Cell', 'T Cell', 'CD1c+ Dendritic Cell']
 sorted_cell_types = sorted(cell_types)
 
 is_link_color = False
@@ -167,18 +168,17 @@ multiplex_img_to_ome_tiff(
 )
 
 # PS code
-# $params = @('reg001_CL_B004', 'reg001_SB_B004', 'reg002_CL_B004', 'reg002_SB_B004', 'reg003_CL_B004', 'reg003_SB_B004', 'reg004_CL_B004', 'reg004_SB_B004')
+# $params = @('D11540', 'D26512', 'D26511')
 
 # foreach ($param in $params) {
 #     Write-Host "Running python .\ome_tiff_generator.py $param"
 #     python .\ome_tiff_generator.py $param
 # }
 
-# Linux pyramid commands
-# params=("reg001_CL_B004" "reg001_SB_B004" "reg002_CL_B004" "reg002_SB_B004" "reg003_CL_B004" "reg003_SB_B004" "reg004_CL_B004" "reg004_SB_B004")
+# pyramid commands
+# $params = @('D11540', 'D26512', 'D26511')
+# foreach ($param in $params) {
+#     Write-Host "Running bfconvert.bat $param"
+#     G:\HuBMAP\bftools\bfconvert.bat -tilex 512 -tiley 512 -pyramid-resolutions 6 -pyramid-scale 2 -compression LZW G:\HubMap\gloria\new_data\vitessce_raw\Region_${param}_mask.ome.tif G:\HubMap\gloria\new_data\vitessce_raw\gloria_data\Region_${param}_mask.pyramid.ome.tif
+# }
 
-# for param in "${params[@]}"
-# do
-#   ./bftools/bfconvert -tilex 512 -tiley 512 -pyramid-resolutions 6 -pyramid-scale 2 -compression LZW /mnt/g/HuBMAP/Hickey/intestine_new_data/vitessce_raw/Region_${param}_mask.ome.tif /mnt/g/HuBMAP/Hickey/intestine_new_data/vitessce_raw/hickey_vccf_data/Region_${param}_mask.pyramid.ome.tif
-# done
-# ./bftools/bfconvert -tilex 512 -tiley 512 -pyramid-resolutions 6 -pyramid-scale 2 -compression LZW /mnt/g/HuBMAP/gloria/new_data/vitessce_raw/Region_D265_mask.ome.tif /mnt/g/HuBMAP/gloria/new_data/vitessce_raw/Region_D265_mask.pyramid.ome.tif
