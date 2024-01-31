@@ -2,10 +2,10 @@ import os
 import pandas as pd
 
 # Given data
+region_names = [f"D26512, D11540"]
 image_urls = [
-    rf'https://storagetuzi.blob.core.windows.net/blobtuzi/gloria/Region_D265_mask.pyramid.ome.tif']
+    rf'https://storagetuzi.blob.core.windows.net/blobtuzi/gloria_data/Region_{region}_mask.pyramid.ome.tif' for region in region_names]
 
-region_names = [f"D265"]
 rows = len(region_names)
 
 # Extract image names from the URLs using os.path.basename
